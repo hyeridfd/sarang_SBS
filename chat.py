@@ -9,17 +9,16 @@ st.title("🧓 질환별 맞춤 5찬 식단 추천 시스템")
 # GitHub에서 메뉴 파일 불러오기
 @st.cache_data
 def load_menu_from_github():
-    url = "https://github.com/hyeridfd/sarang_SBS/blob/main/sarang_menu.xlsx"  # 사용자 GitHub URL로 교체
+    url = "https://raw.githubusercontent.com/hyeridfd/sarang_SBS/main/sarang_menu.xlsx"  # 사용자 GitHub URL로 교체
     response = requests.get(url)
-    return pd.ExcelFile(BytesIO(response.content), engine='openpyxl')
+    return pd.read_excel(BytesIO(response.content), sheet_name="category", engine='openpyxl')
 
 # 어르신 정보 업로드
 uploaded_file = st.file_uploader("📁 어르신 정보를 업로드하세요 (예: 헤리티지_어르신정보.xlsx)", type=["xlsx"])
 
 if uploaded_file:
     patient_df = pd.read_excel(uploaded_file)
-    xls_menu = load_menu_from_github()
-    category_df = xls_menu.parse("category")
+    category_df = load_menu_from_github()
 
     required_categories = ["밥", "국", "주찬", "부찬1", "부찬2", "김치"]
     category_order = pd.CategoricalDtype(categories=required_categories, ordered=True)

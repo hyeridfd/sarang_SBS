@@ -11,7 +11,7 @@ st.title("🧓 질환별 맞춤 5찬 식단 추천 시스템")
 def load_menu_from_github():
     url = "https://github.com/hyeridfd/sarang_SBS/blob/main/sarang_menu.xlsx"  # 사용자 GitHub URL로 교체
     response = requests.get(url)
-    return pd.ExcelFile(BytesIO(response.content))
+    return pd.ExcelFile(BytesIO(response.content), engine='openpyxl')
 
 # 어르신 정보 업로드
 uploaded_file = st.file_uploader("📁 어르신 정보를 업로드하세요 (예: 헤리티지_어르신정보.xlsx)", type=["xlsx"])

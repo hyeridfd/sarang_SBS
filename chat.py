@@ -9,7 +9,7 @@ st.title("🧓 질환별 맞춤 5찬 식단 추천 시스템")
 # GitHub에서 메뉴 파일 불러오기
 @st.cache_data
 def load_menu_from_github():
-    url = "https://github.com/hyeridfd/sarang_SBS/blob/main/sarang_menu.xlsx"  # 사용자 GitHub URL로 교체
+    url = "https://raw.githubusercontent.com/hyeridfd/sarang_SBS/main/sarang_menu.xlsx"  # 사용자 GitHub URL로 교체
     response = requests.get(url)
     return pd.ExcelFile(BytesIO(response.content), engine='openpyxl')
 

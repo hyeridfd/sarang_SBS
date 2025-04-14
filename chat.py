@@ -1,25 +1,24 @@
 import streamlit as st
 import pandas as pd
 import requests
-from io import BytesIO
+from io import StringIO, BytesIO
 
 st.set_page_config(page_title="질환별 5찬 식단 추천 시스템", layout="wide")
 st.title("🧓 질환별 맞춤 5찬 식단 추천 시스템")
 
-# GitHub에서 메뉴 파일 불러오기
+# CSV 메뉴 데이터 불러오기
 @st.cache_data
-def load_menu_from_github():
-    url = "https://raw.githubusercontent.com/hyeridfd/sarang_SBS/main/sarang_menu.xlsx"  # 사용자 GitHub URL로 교체
+def load_menu_from_github_csv():
+    url = "https://raw.githubusercontent.com/hyeridfd/sarang_SBS/main/sarang_menu.csv"  # ← CSV Raw URL
     response = requests.get(url)
-    return pd.ExcelFile(BytesIO(response.content), engine='openpyxl')
+    return pd.read_csv(StringIO(response.content.decode("utf-8")))
 
 # 어르신 정보 업로드
-uploaded_file = st.file_uploader("📁 어르신 정보를 업로드하세요 (예: 헤리티지_어르신정보.xlsx)", type=["xlsx"])
+uploaded_file = st.file_uploader("📁 어르신 정보를 업로드하세요 (예: 헤리티지_어르신정보.csv)", type=["csv"])
 
 if uploaded_file:
-    patient_df = pd.read_excel(uploaded_file)
-    xls_menu = load_menu_from_github()
-    category_df = xls_menu.parse("category")
+    patient_df = pd.read_csv(uploaded_file)
+    category_df = load_menu_from_github_csv()
 
     required_categories = ["밥", "국", "주찬", "부찬1", "부찬2", "김치"]
     category_order = pd.CategoricalDtype(categories=required_categories, ordered=True)
@@ -57,7 +56,6 @@ if uploaded_file:
         selected_menus = (
             filtered_menus
             .drop_duplicates(subset="Category", keep="first")
-            .loc[filtered_menus["Category"].isin(required_categories)]
         )
         if set(required_categories).issubset(set(selected_menus["Category"])):
             selected_menus["Category"] = selected_menus["Category"].astype(category_order)
@@ -85,7 +83,6 @@ if uploaded_file:
             st.warning("해당 수급자ID에 대한 추천 식단이 없습니다.")
 
     # 전체 엑셀 다운로드
-    from io import BytesIO
     output = BytesIO()
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
         for disease, df in final_results.items():

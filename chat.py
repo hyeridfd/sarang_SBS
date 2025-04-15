@@ -378,9 +378,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             ].iloc[0].to_dict()
                             for key, val in nutrient_info.items():
                                 match.loc[:, key] = val
-            
-                            st.markdown(f"### {sid}님의 추천 식단 (질환: {disease_label})")
-                            st.dataframe(match)
 
                             nutrient_cols = [
                                                 "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
@@ -394,6 +391,10 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                     st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")
             
                             results.append(match)
+                            
+                            st.markdown(f"### {sid}님의 추천 식단 (질환: {disease_label})")
+                            st.dataframe(match)
+                            
                             found = True
                     if results:
                         adjusted_results[disease] = pd.concat(results, ignore_index=True)

@@ -373,7 +373,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
     
                     #results = []
                     #match = df[df["수급자ID"] == selected_id]
-                    for selected_id in df["수급자ID"].unique():
+                    #for selected_id in df["수급자ID"].unique():
                         #match = df[df["수급자ID"] == selected_id]
                     
                     # if not match.empty:

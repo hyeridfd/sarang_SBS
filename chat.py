@@ -92,19 +92,20 @@ def generate_final_results(patient_df, category_df):
     return final_results
 
 def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
-    # 문자열 범위("500 ~ 600")를 [500.0, 600.0]으로 변환
+    import streamlit as st  # st.write 사용 시 필요
+
     def parse_range(value):
         try:
             return list(map(lambda x: float(x.strip()), value.split("~")))
         except:
             return [0.0, 0.0]
 
-    # 수급자 데이터 추출
+    # 수급자 기준 정보 가져오기
     row = patient_df[patient_df["수급자ID"] == selected_id]
     if row.empty or "개인_에너지(kcal)" not in row.columns:
         return match
 
-    # 권장 섭취 범위
+    # 권장 범위 파싱
     kcal_min, kcal_max = parse_range(row["개인_에너지(kcal)"].values[0])
     carb_min, carb_max = parse_range(row["개인_탄수화물(g)"].values[0])
     protein_min, protein_max = parse_range(row["개인_단백질(g)"].values[0])
@@ -114,10 +115,9 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     if not set(nutrient_cols).issubset(match.columns) or "Category" not in match.columns:
         return match
 
-    # 실제 식단 총합
+    match = match.copy()  # SettingWithCopyWarning 방지
     totals = match[nutrient_cols].sum(numeric_only=True)
 
-    # 밥 항목 찾기
     rice_rows = match[match["Category"] == "밥"]
     if rice_rows.empty:
         return match
@@ -125,31 +125,33 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     rice_idx = rice_rows.index[0]
     current_rice = match.loc[rice_idx, nutrient_cols]
 
-    # 조정 비율 계산
-    ratios = []
-    
     def compute_ratio(actual, min_val, max_val, rice_val):
+        if rice_val == 0:
+            return 1.0  # 0으로 나누기 방지
         if actual < min_val:
             return (rice_val + (min_val - actual)) / rice_val
         elif actual > max_val:
             return (rice_val - (actual - max_val)) / rice_val
         return 1.0
 
-    ratios.append(compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_rice["에너지(kcal)"]))
-    ratios.append(compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_rice["탄수화물(g)"]))
-    ratios.append(compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_rice["단백질(g)"]))
-    ratios.append(compute_ratio(totals["지방(g)"], fat_min, fat_max, current_rice["지방(g)"]))
+    ratios = [
+        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_rice["에너지(kcal)"]),
+        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_rice["탄수화물(g)"]),
+        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_rice["단백질(g)"]),
+        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_rice["지방(g)"])
+    ]
 
-    # 최종 적용 비율 (과잉 조절 방지: 0.2배 ~ 2.0배)
-    ratio = min(max(max(ratios), 0.2), 2.0)
+    if ratios:
+        ratio = min(max(max(ratios), 0.2), 2.0)
+    else:
+        ratio = 1.0
 
-    if ratio != 1.0:  # 변경이 필요한 경우만 적용
+    if ratio != 1.0:
+        st.write(f"🍚 {selected_id} 밥 조절 비율: {ratio:.2f}")
         for col in nutrient_cols:
             match.loc[rice_idx, col] = match.loc[rice_idx, col] * ratio
 
     return match
-    
-    st.write(f"🍚 {selected_id} 밥 조절 비율: {ratio:.2f}")
 
 
 # ========== Streamlit 앱 시작 ==========

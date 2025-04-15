@@ -105,10 +105,10 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
         return match
 
     # 권장 섭취 범위
-    kcal_min, kcal_max = parse_range(row["개인_에너지 (kcal)"].values[0])
-    carb_min, carb_max = parse_range(row["개인_탄수화물 (g)"].values[0])
-    protein_min, protein_max = parse_range(row["개인_단백질 (g)"].values[0])
-    fat_min, fat_max = parse_range(row["개인_지방 (g)"].values[0])
+    kcal_min, kcal_max = parse_range(row["개인_에너지(kcal)"].values[0])
+    carb_min, carb_max = parse_range(row["개인_탄수화물(g)"].values[0])
+    protein_min, protein_max = parse_range(row["개인_단백질(g)"].values[0])
+    fat_min, fat_max = parse_range(row["개인_지방(g)"].values[0])
 
     nutrient_cols = ["에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)"]
     if not set(nutrient_cols).issubset(match.columns) or "Category" not in match.columns:
@@ -342,7 +342,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                         
                         # 수급자별 점심 권장 영양소 정보 추가
                         nutrient_info = patient_df[patient_df["수급자ID"] == selected_id][
-                            ["개인_에너지(kcal)", "개인_탄수화물 (g)", "개인_단백질(g)", "개인_지방(g)"]
+                            ["개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]
                         ].iloc[0].to_dict()
                         for key, val in nutrient_info.items():
                             match.loc[:, key] = val

@@ -91,6 +91,23 @@ def generate_final_results(patient_df, category_df):
             final_results[disease] = pd.concat(results, ignore_index=True)
     return final_results
 
+def update_rice_nutrient(match, category_df):
+    rice_row = match[match["Category"] == "밥"]
+    if rice_row.empty:
+        return match
+
+    rice_idx = rice_row.index[0]
+    rice_menu = rice_row["Menu"].values[0]
+
+    # category_df에서 같은 메뉴의 영양성분 찾기
+    actual_rice = category_df[(category_df["Category"] == "밥") & (category_df["Menu"] == rice_menu)]
+    if not actual_rice.empty:
+        for col in ["에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)"]:
+            match.loc[rice_idx, col] = actual_rice[col].values[0]
+
+    return match
+
+
 def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     # def parse_range(value):
     #     try:
@@ -370,6 +387,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             continue
                         match = df[df["수급자ID"] == sid]
                         if not match.empty:
+                            match = update_rice_nutrient(match, category_df)
                             match = adjust_rice_if_nutrient_insufficient(match, patient_df, sid)
             
                             disease_label = patient_df[patient_df["수급자ID"] == sid]["표시질환"].values[0]

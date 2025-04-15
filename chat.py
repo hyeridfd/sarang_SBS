@@ -345,8 +345,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                         match = df[df["수급자ID"] == selected_id]
                         if not match.empty:
                             match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
-                            results.append(match)
-                    adjusted_results[disease] = pd.concat(results, ignore_index=True)
                     
                     # if not match.empty:
                     #     match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
@@ -358,6 +356,8 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             ].iloc[0].to_dict()
                             for key, val in nutrient_info.items():
                                 match.loc[:, key] = val
+
+                            results.append(match)
             
                             st.markdown(f"### {selected_id}님의 추천 식단 (질환: {disease_label})")
                             st.dataframe(match)

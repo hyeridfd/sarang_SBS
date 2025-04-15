@@ -89,10 +89,10 @@ if st.sidebar.button("💬 라이프스타일 코칭", use_container_width=True)
 
 # 🥗 맞춤 식단 솔루션 모드
 if st.session_state.mode == "🥗 맞춤 식단 솔루션":
-    st.markdown("### 🏥 요양원을 선택하세요")
-    selected_center = st.selectbox("요양원 선택", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
+    st.markdown("### 🏥 요양원 선택")
+    selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
 
-    st.markdown("### 📁 메뉴 파일과 어르신 정보를 업로드하세요")
+    st.markdown("### 📁 요양원 메뉴 파일과 어르신 정보를 업로드하세요")
 
     uploaded_menu_file = st.file_uploader("🧾 메뉴 데이터 파일 업로드 (예: Menu.xlsx)", type=["xlsx"], key="menu")
     uploaded_patient_file = st.file_uploader("👵 어르신 정보 파일 업로드 (예: 헤리티지_어르신정보.xlsx)", type=["xlsx"], key="patients")

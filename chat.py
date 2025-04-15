@@ -345,6 +345,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                         match = df[df["수급자ID"] == selected_id]
                         if not match.empty:
                             match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
+                            disease_label = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
                     
                     # if not match.empty:
                     #     match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)

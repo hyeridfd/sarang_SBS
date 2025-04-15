@@ -123,14 +123,29 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     rice_idx = rice_rows.index[0]
     current_rice = match.loc[rice_idx, nutrient_cols]
 
-    def compute_ratio(actual, min_val, max_val, rice_val):
+    # def compute_ratio(actual, min_val, max_val, rice_val):
+    #     if rice_val == 0:
+    #         return 1.0  # 0으로 나누기 방지
+    #     if actual < min_val:
+    #         return (rice_val + (min_val - actual)) / rice_val
+    #     elif actual > max_val:
+    #         return (rice_val - (actual - max_val)) / rice_val
+    #     return 1.0
+
+    def compute_ratio(actual, min_val, max_val, rice_val, nutrient_name):
         if rice_val == 0:
-            return 1.0  # 0으로 나누기 방지
+            return 1.0
         if actual < min_val:
-            return (rice_val + (min_val - actual)) / rice_val
+            needed = min_val - actual
+            st.info(f"🔺 {nutrient_name}: 부족 {needed:.2f} → 비율 {(rice_val + needed) / rice_val:.2f}")
+            return (rice_val + needed) / rice_val
         elif actual > max_val:
-            return (rice_val - (actual - max_val)) / rice_val
-        return 1.0
+            excess = actual - max_val
+            st.info(f"🔻 {nutrient_name}: 초과 {excess:.2f} → 비율 {(rice_val - excess) / rice_val:.2f}")
+            return (rice_val - excess) / rice_val
+        else:
+            st.info(f"✅ {nutrient_name}: 기준 충족 → 비율 1.00")
+            return 1.0
 
     ratios = [
         compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_rice["에너지(kcal)"]),
@@ -140,7 +155,7 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     ]
 
     if ratios:
-        ratio = min(max(max(ratios), 0.8), 2.0)
+        ratio = min(max(max(ratios), 0.2), 2.0)
     else:
         ratio = 1.0
 

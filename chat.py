@@ -92,8 +92,6 @@ def generate_final_results(patient_df, category_df):
     return final_results
 
 def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
-    import streamlit as st  # st.write 사용 시 필요
-
     def parse_range(value):
         try:
             return list(map(lambda x: float(x.strip()), value.split("~")))
@@ -337,13 +335,22 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         selected_ids = [s.strip() for s in selected_ids_input.replace("\n", ",").split(",") if s.strip()]
 
         if selected_ids:
+            adjusted_results = {}
             for selected_id in selected_ids:
                 found = False
                 for disease, df in final_results.items():
-                    match = df[df["수급자ID"] == selected_id]
-                    if not match.empty:
-                        match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
-                        disease_label = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
+                    results = []
+                    #match = df[df["수급자ID"] == selected_id]
+                    for selected_id in df["수급자ID"].unique():
+                        match = df[df["수급자ID"] == selected_id]
+                        if not match.empty:
+                            match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
+                            results.append(match)
+                    adjusted_results[disease] = pd.concat(results, ignore_index=True)
+                    
+                    # if not match.empty:
+                    #     match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
+                    #     disease_label = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
                         
                         # 수급자별 점심 권장 영양소 정보 추가
                         nutrient_info = patient_df[patient_df["수급자ID"] == selected_id][
@@ -379,7 +386,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         # 엑셀 다운로드
         output = BytesIO()
         with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-            for disease, df in final_results.items():
+            for disease, df in adjusted_results.items():
                 # 💡 수급자별 영양소 정보 병합
                 merged = df.merge(
                     patient_df[["수급자ID", "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]],

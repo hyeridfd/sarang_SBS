@@ -200,6 +200,76 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         ) else row["질환"], axis=1)
     
         final_results = generate_final_results(patient_df, category_df)
+
+        # 🥗 점심 영양소 계산을 위한 함수 정의
+        def convert_height_pa(row):
+            height_m = row["신장"] / 100  # cm → m
+            pa_map = {1: 1.0, 2: 1.1, 3: 1.2}
+            pa = pa_map.get(row["활동정도"], 1.0)
+            return height_m, pa
+        
+        def calculate_eer(sex, age, weight, height, pa):
+            if sex in ['남성', 'male', '남']:
+                return 662 - (9.53 * age) + pa * (15.91 * weight + 539.6 * height)
+            elif sex in ['여성', 'female', '여']:
+                return 354 - (6.91 * age) + pa * (9.36 * weight + 726 * height)
+            else:
+                raise ValueError("Invalid sex")
+        
+        def calculate_daily_intake(sex, age, weight, height, pa, waist=100):
+            bmi = weight / (height ** 2)
+            eer = calculate_eer(sex, age, weight, height, pa)
+            if bmi >= 25 or (sex in ['남성', 'male', '남'] and waist >= 90) or (sex in ['여성', 'female', '여'] and waist >= 85):
+                return (eer - 400, eer - 200)
+            elif 18.5 <= bmi < 23:
+                return (eer + 300, eer + 500)
+            else:
+                return (eer + 600, eer + 800)
+        
+        def calculate_meal_distribution(daily_intake_range):
+            min_intake, max_intake = daily_intake_range
+            return (min_intake * 0.3, max_intake * 0.3)  # 점심 기준 30%
+        
+        # ✨ 점심 기준 영양소 계산 및 컬럼 추가
+        energy_list, carbs_list, protein_list, fat_list = [], [], [], []
+        
+        for _, row in patient_df.iterrows():
+            sex = row["성별"]
+            age = row["나이"]
+            weight = row["체중"]
+            height_m, pa = convert_height_pa(row)
+            
+            try:
+                daily_range = calculate_daily_intake(sex, age, weight, height_m, pa)
+                lunch_kcal = calculate_meal_distribution(daily_range)
+                
+                carbs_min = daily_range[0] * 0.55 / 4
+                carbs_max = daily_range[1] * 0.65 / 4
+                protein_min = max(50, daily_range[0] * 0.07 / 4) if sex in ['남성', 'male', '남'] else max(40, daily_range[0] * 0.07 / 4)
+                protein_max = daily_range[1] * 0.20 / 4
+                fat_min = daily_range[0] * 0.15 / 9
+                fat_max = daily_range[1] * 0.30 / 9
+        
+                lunch_carbs = calculate_meal_distribution((carbs_min, carbs_max))
+                lunch_protein = calculate_meal_distribution((protein_min, protein_max))
+                lunch_fat = calculate_meal_distribution((fat_min, fat_max))
+        
+                energy_list.append(f"{lunch_kcal[0]:.0f} ~ {lunch_kcal[1]:.0f}")
+                carbs_list.append(f"{lunch_carbs[0]:.0f} ~ {lunch_carbs[1]:.0f}")
+                protein_list.append(f"{lunch_protein[0]:.0f} ~ {lunch_protein[1]:.0f}")
+                fat_list.append(f"{lunch_fat[0]:.0f} ~ {lunch_fat[1]:.0f}")
+        
+            except:
+                energy_list.append("에러")
+                carbs_list.append("에러")
+                protein_list.append("에러")
+                fat_list.append("에러")
+        
+        patient_df["에너지 (kcal)"] = energy_list
+        patient_df["탄수화물 (g)"] = carbs_list
+        patient_df["단백질 (g)"] = protein_list
+        patient_df["지방 (g)"] = fat_list
+
     
         selected_id = st.text_input("🔍 수급자ID를 입력하세요:")
         if selected_id:

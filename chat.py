@@ -8,13 +8,13 @@ def assign_disease(row):
     if row["연하곤란"] == 1:
         return "연하곤란"
     elif row["고혈압"] == 1 and row["신장질환"] == 1:
-        return "신장"
+        return "신장질환"
     elif row["당뇨"] == 1 and row["신장질환"] == 1:
-        return "신장"
+        return "신장질환"
     elif row["당뇨"] == 1 and row["고혈압"] == 1:
         return "고혈압"
     elif row["신장질환"] == 1:
-        return "신장"
+        return "신장질환"
     elif row["고혈압"] == 1:
         return "고혈압"
     elif row["당뇨"] == 1:

@@ -194,6 +194,10 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
     
         patient_df["질환"] = patient_df.apply(assign_disease, axis=1)
         patient_df["식단옵션"] = patient_df.apply(lambda row: get_meal_option(row["밥"], row["반찬"], row["질환"]), axis=1)
+
+        patient_df["표시질환"] = patient_df.apply(lambda row: "질환없음" if (
+            row["당뇨"] == 0 and row["고혈압"] == 0 and row["신장질환"] == 0 and row["연하곤란"] == 0
+        ) else row["질환"], axis=1)
     
         final_results = generate_final_results(patient_df, category_df)
     

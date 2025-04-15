@@ -270,24 +270,48 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         patient_df["단백질 (g)"] = protein_list
         patient_df["지방 (g)"] = fat_list
 
-    
-        selected_id = st.text_input("🔍 수급자ID를 입력하세요:")
-        if selected_id:
-            found = False
-            for disease, df in final_results.items():
-                match = df[df["수급자ID"] == selected_id]
-                disease = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
-                if not match.empty:
-                    nutrient_info = patient_df[patient_df["수급자ID"] == selected_id][
-                        ["에너지 (kcal)", "탄수화물 (g)", "단백질 (g)", "지방 (g)"]
-                    ].iloc[0].to_dict()
-                    for key, val in nutrient_info.items():
-                        match.loc[:, key] = val
-                    st.success(f"✅ {selected_id}님의 추천 식단 (질환: {disease})")
-                    st.dataframe(match)
-                    found = True
-            if not found:
-                st.warning("해당 수급자ID에 대한 식단을 찾을 수 없습니다.")
+        # 여러 명의 수급자ID 입력 가능하도록 수정
+        selected_ids_input = st.text_area("🔍 수급자ID를 입력하세요 (여러 명은 쉼표 또는 줄바꿈으로 구분)")
+        selected_ids = [s.strip() for s in selected_ids_input.replace("\n", ",").split(",") if s.strip()]
+
+        if selected_ids:
+            for selected_id in selected_ids:
+                found = False
+                for disease, df in final_results.items():
+                    match = df[df["수급자ID"] == selected_id]
+                    if not match.empty:
+                        disease_label = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
+                        
+                        # 수급자별 점심 권장 영양소 정보 추가
+                        nutrient_info = patient_df[patient_df["수급자ID"] == selected_id][
+                            ["에너지 (kcal)", "탄수화물 (g)", "단백질 (g)", "지방 (g)"]
+                        ].iloc[0].to_dict()
+                        for key, val in nutrient_info.items():
+                            match.loc[:, key] = val
+        
+                        st.markdown(f"### {selected_id}님의 추천 식단 (질환: {disease_label})")
+                        st.dataframe(match)
+        
+                        # 실제 식단의 메뉴별 에너지/영양 총합 계산 (가능한 경우)
+                        nutrient_cols = [
+                            "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
+                            "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
+                        ]
+                        
+                        if set(nutrient_cols).issubset(match.columns):
+                            st.markdown("#### 🧪 실제 메뉴 영양소 총합")
+                            total_nutrients = match[nutrient_cols].sum(numeric_only=True)
+                            for col in nutrient_cols:
+                                st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")
+                        
+                        else:
+                            st.info("해당 식단에는 영양소 정보(Energy, Carbohydrate 등)가 포함되어 있지 않습니다.")
+        
+                        found = True
+                        break
+                if not found:
+                    st.warning(f"❌ {selected_id} 수급자ID에 대한 식단을 찾을 수 없습니다.")
+
     
         # 엑셀 다운로드
         output = BytesIO()

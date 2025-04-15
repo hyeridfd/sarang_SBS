@@ -333,9 +333,9 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         # 여러 명의 수급자ID 입력 가능하도록 수정
         selected_ids_input = st.text_area("🔍 수급자ID를 입력하세요 (여러 명은 쉼표 또는 줄바꿈으로 구분)")
         selected_ids = [s.strip() for s in selected_ids_input.replace("\n", ",").split(",") if s.strip()]
-
+        
+        adjusted_results = {}
         if selected_ids:
-            adjusted_results = {}
             for selected_id in selected_ids:
                 found = False
                 for disease, df in final_results.items():

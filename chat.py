@@ -127,9 +127,7 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
 
     # 조정 비율 계산
     ratios = []
-
-    st.write(f"🍚 {selected_id} 밥 조절 비율: {ratio:.2f}")
-
+    
     def compute_ratio(actual, min_val, max_val, rice_val):
         if actual < min_val:
             return (rice_val + (min_val - actual)) / rice_val
@@ -150,6 +148,9 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
             match.loc[rice_idx, col] = match.loc[rice_idx, col] * ratio
 
     return match
+    
+    st.write(f"🍚 {selected_id} 밥 조절 비율: {ratio:.2f}")
+
 
 # ========== Streamlit 앱 시작 ==========
 

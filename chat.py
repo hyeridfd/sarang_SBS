@@ -117,6 +117,8 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 return "고혈압"
             elif row["당뇨"]:
                 return "당뇨"
+            elif row["연하곤란"]:
+                return "연하곤란"
             return None
 
         patient_df["질환"] = patient_df.apply(determine_disease, axis=1)
@@ -125,6 +127,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
             "당뇨": category_df[category_df["Disease"].str.contains("당뇨", na=False)]["Menu"].unique(),
             "고혈압": category_df[category_df["Disease"].str.contains("고혈압", na=False)]["Menu"].unique(),
             "신장": category_df[category_df["Disease"].str.contains("신장", na=False)]["Menu"].unique(),
+            "연하곤란": category_df[category_df["Disease"].str.contains("연하곤란", na=False)]["Menu"].unique(),
         }
 
         final_results = {}

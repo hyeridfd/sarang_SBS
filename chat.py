@@ -20,7 +20,7 @@ def assign_disease(row):
         return "고혈압"
     elif row["당뇨"] == 1:
         return "당뇨"
-    return None
+    return "당뇨"
 
 def get_meal_option(rice, side, disease):
     replace_rice = None

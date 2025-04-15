@@ -69,7 +69,7 @@ def apply_meal_customization(menu_df, option):
     return modified_df
 
 def generate_final_results(patient_df, category_df):
-    disease_types = ["질환없음", "당뇨", "고혈압", "신장", "연하곤란"]
+    disease_types = ["질환없음", "당뇨", "고혈압", "신장질환", "연하곤란"]
     required_categories = ["밥", "국", "주찬", "부찬1", "부찬2", "김치"]
     category_order = pd.CategoricalDtype(categories=required_categories, ordered=True)
     final_results = {}

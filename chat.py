@@ -140,7 +140,7 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     ]
 
     if ratios:
-        ratio = min(max(max(ratios), 0.2), 2.0)
+        ratio = min(max(max(ratios), 0.8), 2.0)
     else:
         ratio = 1.0
 

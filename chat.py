@@ -144,12 +144,21 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     match = match.copy()  # SettingWithCopyWarning 방지
     totals = match[nutrient_cols].sum(numeric_only=True)
 
-    rice_rows = match[match["Category"] == "밥"]
-    if rice_rows.empty:
+    adjust_targets = match[match["Category"].isin(["밥", "주찬"])]
+    if adjust_targets.empty:
         return match
 
-    rice_idx = rice_rows.index[0]
-    current_rice = match.loc[rice_idx, nutrient_cols]
+    # rice_rows = match[match["Category"] == "밥"]
+    # if rice_rows.empty:
+    #     return match
+
+    # rice_idx = rice_rows.index[0]
+    # current_rice = match.loc[rice_idx, nutrient_cols]
+
+    idxs = adjust_targets.index.tolist()
+    
+    current_vals = match.loc[idxs, nutrient_cols].sum(numeric_only=True)
+
 
     # def compute_ratio(actual, min_val, max_val, rice_val):
     #     if rice_val == 0:
@@ -160,37 +169,59 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     #         return (rice_val - (actual - max_val)) / rice_val
     #     return 1.0
 
-    def compute_ratio(actual, min_val, max_val, rice_val, nutrient_name):
-        if rice_val == 0:
+    # def compute_ratio(actual, min_val, max_val, rice_val, nutrient_name):
+    #     if rice_val == 0:
+    #         return 1.0
+    #     if actual < min_val:
+    #         needed = min_val - actual
+    #         st.info(f"🔺 {nutrient_name}: 부족 {needed:.2f} → 비율 {(rice_val + needed) / rice_val:.2f}")
+    #         return (rice_val + needed) / rice_val
+    #     elif actual > max_val:
+    #         excess = actual - max_val
+    #         st.info(f"🔻 {nutrient_name}: 초과 {excess:.2f} → 비율 {(rice_val - excess) / rice_val:.2f}")
+    #         return (rice_val - excess) / rice_val
+    #     else:
+    #         st.info(f"✅ {nutrient_name}: 기준 충족 → 비율 1.00")
+    #         return 1.0
+    
+    def compute_ratio(actual, min_val, max_val, adjust_val, name):
+        if adjust_val == 0:
             return 1.0
         if actual < min_val:
             needed = min_val - actual
-            st.info(f"🔺 {nutrient_name}: 부족 {needed:.2f} → 비율 {(rice_val + needed) / rice_val:.2f}")
-            return (rice_val + needed) / rice_val
+            ratio = (adjust_val + needed) / adjust_val
+            st.info(f"🔺 {name}: 부족 {needed:.2f} → 비율 {ratio:.2f}")
+            return ratio
         elif actual > max_val:
             excess = actual - max_val
-            st.info(f"🔻 {nutrient_name}: 초과 {excess:.2f} → 비율 {(rice_val - excess) / rice_val:.2f}")
-            return (rice_val - excess) / rice_val
+            ratio = (adjust_val - excess) / adjust_val
+            st.info(f"🔻 {name}: 초과 {excess:.2f} → 비율 {ratio:.2f}")
+            return ratio
         else:
-            st.info(f"✅ {nutrient_name}: 기준 충족 → 비율 1.00")
+            st.info(f"✅ {name}: 기준 충족 → 비율 1.00")
             return 1.0
 
-    ratios = [
-        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_rice["에너지(kcal)"], "에너지"),
-        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_rice["탄수화물(g)"], "탄수화물"),
-        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_rice["단백질(g)"], "단백질"),
-        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_rice["지방(g)"], "지방")
-    ]
 
-    if ratios:
-        ratio = min(max(max(ratios), 0.2), 2.0)
-    else:
-        ratio = 1.0
+    # ratios = [
+    #     compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_rice["에너지(kcal)"], "에너지"),
+    #     compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_rice["탄수화물(g)"], "탄수화물"),
+    #     compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_rice["단백질(g)"], "단백질"),
+    #     compute_ratio(totals["지방(g)"], fat_min, fat_max, current_rice["지방(g)"], "지방")
+    # ]
+
+    ratios = [
+        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
+        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_vals["탄수화물(g)"], "탄수화물"),
+        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_vals["단백질(g)"], "단백질"),
+        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
+    ]
+    
+    ratio = min(max(max(ratios), 0.2), 1.5)
 
     if ratio != 1.0:
-        st.write(f"🍚 {selected_id} 밥 조절 비율: {ratio:.2f}")
+        st.write(f"🍚 {selected_id} 밥+주찬 조절 비율: {ratio:.2f}")
         for col in nutrient_cols:
-            match.loc[rice_idx, col] = match.loc[rice_idx, col] * ratio
+            match.loc[idxs, col] = match.loc[idxs, col] * ratio
 
     return match
 

@@ -20,7 +20,7 @@ def assign_disease(row):
         return "고혈압"
     elif row["당뇨"] == 1:
         return "당뇨"
-    return "당뇨"
+    return "질환없음"
 
 def get_meal_option(rice, side, disease):
     replace_rice = None
@@ -70,7 +70,7 @@ def apply_meal_customization(menu_df, option):
     return modified_df
 
 def generate_final_results(patient_df, category_df):
-    disease_types = ["당뇨", "고혈압", "신장", "연하곤란"]
+    disease_types = ["질환없음", "당뇨", "고혈압", "신장", "연하곤란"]
     required_categories = ["밥", "국", "주찬", "부찬1", "부찬2", "김치"]
     category_order = pd.CategoricalDtype(categories=required_categories, ordered=True)
     final_results = {}
@@ -85,7 +85,7 @@ def generate_final_results(patient_df, category_df):
                 customized = apply_meal_customization(selected, option)
                 customized["Category"] = customized["Category"].astype(category_order)
                 customized = customized.sort_values("Category")
-                customized.insert(0, "질환", disease)
+                #customized.insert(0, "질환", disease)
                 customized.insert(0, "수급자ID", patient_id)
                 results.append(customized)
         if results:

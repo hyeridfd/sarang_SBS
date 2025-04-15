@@ -98,15 +98,15 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     #     except:
     #         return [0.0, 0.0]
     def parse_range(value):
-    try:
-        if isinstance(value, str) and "~" in value:
-            parts = value.split("~")
-            return [float(parts[0].strip()), float(parts[1].strip())]
-        elif isinstance(value, (float, int)):
-            return [value, value]
-    except Exception as e:
-        st.warning(f"⚠️ parse_range 오류: {value}, 에러: {e}")
-    return [0.0, 0.0]
+        try:
+            if isinstance(value, str) and "~" in value:
+                parts = value.split("~")
+                return [float(parts[0].strip()), float(parts[1].strip())]
+            elif isinstance(value, (float, int)):
+                return [value, value]
+        except Exception as e:
+            st.warning(f"⚠️ parse_range 오류: {value}, 에러: {e}")
+        return [0.0, 0.0]
 
     # 수급자 기준 정보 가져오기
     row = patient_df[patient_df["수급자ID"] == selected_id]

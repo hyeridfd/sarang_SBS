@@ -103,7 +103,7 @@ def update_rice_nutrient(match, category_df):
     actual_rice = category_df[(category_df["Category"] == "밥") & (category_df["Menu"] == rice_menu)]
     
     if not actual_rice.empty:
-        for col in ["총 중량", "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"]
+        for col in ["총 중량", "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"]:
             match.loc[rice_idx, col] = actual_rice[col].values[0]
 
     return match

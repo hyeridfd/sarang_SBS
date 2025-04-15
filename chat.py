@@ -137,7 +137,7 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     protein_min, protein_max = parse_range(row["개인_단백질(g)"].values[0])
     fat_min, fat_max = parse_range(row["개인_지방(g)"].values[0])
 
-    nutrient_cols = ["에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)"]
+    nutrient_cols = ["총 중량", "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"]
     if not set(nutrient_cols).issubset(match.columns) or "Category" not in match.columns:
         return match
 

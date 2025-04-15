@@ -322,10 +322,10 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 protein_list.append("에러")
                 fat_list.append("에러")
         
-        patient_df["개인_에너지 (kcal)"] = energy_list
-        patient_df["개인_탄수화물 (g)"] = carbs_list
-        patient_df["개인_단백질 (g)"] = protein_list
-        patient_df["개인_지방 (g)"] = fat_list
+        patient_df["개인_에너지(kcal)"] = energy_list
+        patient_df["개인_탄수화물(g)"] = carbs_list
+        patient_df["개인_단백질(g)"] = protein_list
+        patient_df["개인_지방(g)"] = fat_list
 
         # 여러 명의 수급자ID 입력 가능하도록 수정
         selected_ids_input = st.text_area("🔍 수급자ID를 입력하세요 (여러 명은 쉼표 또는 줄바꿈으로 구분)")
@@ -342,7 +342,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                         
                         # 수급자별 점심 권장 영양소 정보 추가
                         nutrient_info = patient_df[patient_df["수급자ID"] == selected_id][
-                            ["에너지 (kcal)", "탄수화물 (g)", "단백질 (g)", "지방 (g)"]
+                            ["개인_에너지(kcal)", "개인_탄수화물 (g)", "개인_단백질(g)", "개인_지방(g)"]
                         ].iloc[0].to_dict()
                         for key, val in nutrient_info.items():
                             match.loc[:, key] = val
@@ -377,7 +377,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
             for disease, df in final_results.items():
                 # 💡 수급자별 영양소 정보 병합
                 merged = df.merge(
-                    patient_df[["수급자ID", "개인_에너지 (kcal)", "개인_탄수화물 (g)", "개인_단백질 (g)", "개인_지방 (g)"]],
+                    patient_df[["수급자ID", "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]],
                     on="수급자ID", how="left"
                 )
                 merged.to_excel(writer, sheet_name=disease, index=False)

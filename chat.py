@@ -36,6 +36,10 @@ def get_meal_option(rice, side, disease):
         suffix = "_다진"
         soup_suffix = "_건더기잘게"
         replace_rice = {"잡곡밥": "야채죽", "쌀밥": "야채죽"}
+    elif rice == "일반죽" and side == "갈찬":
+            suffix = "_갈찬"
+            soup_suffix = "_건더기잘게"
+            replace_rice = {"잡곡밥": "야채죽", "쌀밥": "야채죽"}
     elif rice == "갈죽" and side == "갈찬":
         suffix = "_갈찬"
         soup_suffix = "_국물만"
@@ -66,7 +70,7 @@ def apply_meal_customization(menu_df, option):
     return modified_df
 
 def generate_final_results(patient_df, category_df):
-    disease_types = ["당뇨", "고혈압", "신장"]
+    disease_types = ["당뇨", "고혈압", "신장", "연하곤란"]
     required_categories = ["밥", "국", "주찬", "부찬1", "부찬2", "김치"]
     category_order = pd.CategoricalDtype(categories=required_categories, ordered=True)
     final_results = {}

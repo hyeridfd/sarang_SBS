@@ -105,7 +105,9 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         category_order = pd.CategoricalDtype(categories=required_categories, ordered=True)
 
         def determine_disease(row):
-            if row["고혈압"] and row["신장질환"]:
+            if row["연하곤란"]:
+                return "연하곤란"
+            elif row["고혈압"] and row["신장질환"]:
                 return "신장"
             elif row["당뇨"] and row["신장질환"]:
                 return "신장"
@@ -117,8 +119,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 return "고혈압"
             elif row["당뇨"]:
                 return "당뇨"
-            elif row["연하곤란"]:
-                return "연하곤란"
             return None
 
         patient_df["질환"] = patient_df.apply(determine_disease, axis=1)

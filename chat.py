@@ -3,8 +3,14 @@ import pandas as pd
 import requests
 from io import BytesIO
 
-st.set_page_config(page_title="질환별 5찬 식단 추천 시스템", layout="wide")
-st.title("🧓 질환별 맞춤 5찬 식단 추천 시스템")
+st.set_page_config(page_title="사랑과선행 요양원 맞춤 식단 추천 시스템", layout="wide")
+
+st.image("./logo.png", width=150)
+
+st.markdown(
+    '<h3 style="color:#226f54; font-size:38px; font-weight:bold;">사랑과선행 요양원 맞춤 푸드 솔루션</h3>',
+    unsafe_allow_html=True
+)
 
 # GitHub에서 메뉴 파일 불러오기
 @st.cache_data

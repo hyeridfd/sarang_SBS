@@ -206,6 +206,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
             found = False
             for disease, df in final_results.items():
                 match = df[df["수급자ID"] == selected_id]
+                disease = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
                 if not match.empty:
                     st.success(f"✅ {selected_id}님의 추천 식단 (질환: {disease})")
                     st.dataframe(match)

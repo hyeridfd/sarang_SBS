@@ -450,8 +450,18 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             results.append(match)
                             
                             found = True
+                            
+                    # if results:
+                    #     adjusted_results[disease] = pd.concat(results, ignore_index=True)
                     if results:
-                        adjusted_results[disease] = pd.concat(results, ignore_index=True)
+                        if disease not in adjusted_results:
+                            adjusted_results[disease] = pd.concat(results, ignore_index=True)
+                        else:
+                            adjusted_results[disease] = pd.concat(
+                                [adjusted_results[disease], pd.concat(results, ignore_index=True)],
+                                ignore_index=True
+                        )
+
                 if not found:
                     st.warning(f"❌ {selected_id} 수급자ID에 대한 식단을 찾을 수 없습니다.")
 

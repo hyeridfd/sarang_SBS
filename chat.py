@@ -383,6 +383,9 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                                 "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
                                                 "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
                                             ]
+
+                            st.markdown(f"### {sid}님의 추천 식단 (질환: {disease_label})")
+                            st.dataframe(match)
             
                             if set(nutrient_cols).issubset(match.columns):
                                 st.markdown("#### 🧪 실제 메뉴 영양소 총합")
@@ -391,9 +394,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                     st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")
             
                             results.append(match)
-                            
-                            st.markdown(f"### {sid}님의 추천 식단 (질환: {disease_label})")
-                            st.dataframe(match)
                             
                             found = True
                     if results:

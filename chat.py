@@ -278,6 +278,11 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 match = df[df["수급자ID"] == selected_id]
                 disease = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
                 if not match.empty:
+                    nutrient_info = patient_df[patient_df["수급자ID"] == selected_id][
+                        ["에너지 (kcal)", "탄수화물 (g)", "단백질 (g)", "지방 (g)"]
+                    ].iloc[0].to_dict()
+                    for key, val in nutrient_info.items():
+                        match.loc[:, key] = val
                     st.success(f"✅ {selected_id}님의 추천 식단 (질환: {disease})")
                     st.dataframe(match)
                     found = True
@@ -288,8 +293,17 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         output = BytesIO()
         with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
             for disease, df in final_results.items():
-                df.to_excel(writer, sheet_name=disease, index=False)
+                # 💡 수급자별 영양소 정보 병합
+                merged = df.merge(
+                    patient_df[["수급자ID", "에너지 (kcal)", "탄수화물 (g)", "단백질 (g)", "지방 (g)"]],
+                    on="수급자ID", how="left"
+                )
+                merged.to_excel(writer, sheet_name=disease, index=False)
         output.seek(0)
-        st.download_button("⬇️ 전체 식단 엑셀 다운로드", data=output, file_name="맞춤_식단_추천.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    else:
-        st.info("먼저 메뉴 파일과 어르신 정보를 업로드해주세요.")
+        st.download_button(
+            "⬇️ 전체 식단 엑셀 다운로드", 
+            data=output, 
+            file_name="맞춤_식단_추천.xlsx", 
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+

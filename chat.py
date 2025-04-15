@@ -216,7 +216,7 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
         compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
     ]
     
-    ratio = min(max(max(ratios), 0.2), 1.5)
+    ratio = min(max(max(ratios), 0.2), 2.0)
 
     if ratio != 1.0:
         st.write(f"🍚 {selected_id} 밥+주찬 조절 비율: {ratio:.2f}")

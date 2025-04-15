@@ -25,29 +25,44 @@ def assign_disease(row):
 def get_meal_option(rice, side, disease):
     replace_rice = None
     suffix = ""
+    soup_suffix = ""
+
     if rice == "일반밥" and side == "일반찬":
         suffix = ""
     elif rice == "일반밥" and side == "다진찬":
-        suffix = "_다진찬"
+        suffix = "_다진"
+        soup_suffix = "_건더기잘게"
     elif rice == "일반죽" and side == "다진찬":
-        suffix = "_다진찬"
-        if disease == "신장":
-            replace_rice = {"잡곡밥": "야채죽", "쌀밥": "야채죽"}
+        suffix = "_다진"
+        soup_suffix = "_건더기잘게"
+        replace_rice = {"잡곡밥": "야채죽", "쌀밥": "야채죽"}
     elif rice == "갈죽" and side == "갈찬":
         suffix = "_갈찬"
-        if disease == "신장":
-            replace_rice = {"잡곡밥": "야채죽_갈죽", "쌀밥": "야채죽_갈죽"}
-    return {"suffix": suffix, "replace_rice": replace_rice}
+        soup_suffix = "_국물만"
+        replace_rice = {"잡곡밥": "야채죽_갈죽", "쌀밥": "야채죽_갈죽"}
+
+    return {"suffix": suffix, "soup_suffix": soup_suffix, "replace_rice": replace_rice}
+
 
 def apply_meal_customization(menu_df, option):
     suffix = option["suffix"]
+    soup_suffix = option["soup_suffix"]
     replace_rice = option["replace_rice"]
+
     modified_df = menu_df.copy()
+
+    # 밥 대체
     if replace_rice:
         for old_val, new_val in replace_rice.items():
             modified_df.loc[(modified_df["Category"] == "밥") & (modified_df["Menu"] == old_val), "Menu"] = new_val
+
+    # 국: 별도 suffix 적용
+    modified_df.loc[modified_df["Category"] == "국", "Menu"] += soup_suffix
+
+    # 부찬류: 공통 suffix 적용
     for cat in ["주찬", "부찬1", "부찬2", "김치"]:
         modified_df.loc[modified_df["Category"] == cat, "Menu"] += suffix
+
     return modified_df
 
 def generate_final_results(patient_df, category_df):
@@ -76,7 +91,7 @@ def generate_final_results(patient_df, category_df):
 # ========== Streamlit 앱 시작 ==========
 
 st.set_page_config(page_title="맞춤형 식단 추천", layout="wide")
-st.title("🍱 어르신 맞춤형 식단 추천 시스템")
+st.title("요양원 맞춤형 식단 추천 시스템")
 
 menu_file = st.file_uploader("📂 메뉴 파일 업로드 (예: sarang_menu.xlsx)", type="xlsx")
 patient_file = st.file_uploader("📂 어르신 정보 파일 업로드 (예: 헤리티지_어르신정보.xlsx)", type="xlsx")

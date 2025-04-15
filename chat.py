@@ -11,6 +11,55 @@ st.markdown(
     '<h3 style="color:#226f54; font-size:38px; font-weight:bold;">사랑과선행 요양원 맞춤 푸드 솔루션</h3>',
     unsafe_allow_html=True
 )
+st.sidebar.markdown("""
+    <style>
+    section[data-testid="stSidebar"] {
+        background-color: #f7fadb !important;
+    }
+
+    div.stButton > button {
+        padding: 1rem 1.5rem;
+        font-size: 24px !important;
+        font-weight: 600;
+        border-radius: 12px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        transition: all 0.2s ease-in-out;
+        background-color: #eaf291;
+        border: 1px solid #d6d84c;
+        color: #444;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        transition: all 0.2s ease-in-out;
+    }
+
+    div.stButton > button:hover {
+        background-color: #dce75b;
+        border: 1px solid #a3a93d;
+        color: #2e2e2e;
+    }
+
+    div.stButton > button:focus {
+        outline: none;
+        box-shadow: none;
+        border: 1px solid #d0d0d0;
+    }
+
+    .selected-button {
+        background-color: #B8BF3D !important;
+        border: 1px solid #90972b !important;
+        color: white !important;
+    }
+
+    h3.sidebar-title {
+        color: #B8BF3D;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+st.caption("어르신들의 건강 상태를 고려한 식단 솔루션을 제공합니다.")
+
 
 # GitHub에서 메뉴 파일 불러오기
 @st.cache_data

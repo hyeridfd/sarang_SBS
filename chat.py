@@ -101,7 +101,7 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
 
     # 수급자 데이터 추출
     row = patient_df[patient_df["수급자ID"] == selected_id]
-    if row.empty or "개인_에너지 (kcal)" not in row.columns:
+    if row.empty or "개인_에너지(kcal)" not in row.columns:
         return match
 
     # 권장 섭취 범위
@@ -127,6 +127,8 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
 
     # 조정 비율 계산
     ratios = []
+
+    st.write(f"🍚 {selected_id} 밥 조절 비율: {ratio:.2f}")
 
     def compute_ratio(actual, min_val, max_val, rice_val):
         if actual < min_val:

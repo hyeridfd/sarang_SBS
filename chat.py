@@ -158,10 +158,10 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
             return 1.0
 
     ratios = [
-        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_rice["에너지(kcal)"]),
-        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_rice["탄수화물(g)"]),
-        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_rice["단백질(g)"]),
-        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_rice["지방(g)"])
+        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_rice["에너지(kcal)"], "에너지"),
+        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_rice["탄수화물(g)"], "탄수화물"),
+        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_rice["단백질(g)"], "단백질"),
+        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_rice["지방(g)"], "지방")
     ]
 
     if ratios:

@@ -670,5 +670,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         )
     st.write("category_df['Disease']에 존재하는 질환들:", category_df["Disease"].unique())
     st.write("patient_df['대표질환'] 값:", patient_df["대표질환"].unique())
+    st.write("patient_df['대표질환'] 유형:", patient_df["대표질환"].dtype)
     st.write("patient_df['질환'] 값:", patient_df["질환"].unique())
 

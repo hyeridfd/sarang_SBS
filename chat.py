@@ -642,9 +642,9 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
 
 
         if not adjusted_results:
-        st.warning("⚠️ adjusted_results가 비어 있습니다. 식단 결과가 없어서 엑셀이 비어 있을 수 있어요.")
+            st.warning("⚠️ adjusted_results가 비어 있습니다. 식단 결과가 없어서 엑셀이 비어 있을 수 있어요.")
         else:
-        st.success("✅ adjusted_results에 데이터가 있습니다.")
+            st.success("✅ adjusted_results에 데이터가 있습니다.")
 
         # 엑셀 다운로드
         output = BytesIO()

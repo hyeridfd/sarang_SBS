@@ -276,7 +276,7 @@ def extract_float(text):
 #     return "확인불가"
 def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
     rule = str(rule).strip()
-    
+    print(f"🔍 기준 판별 → nutrient: {nutrient}, value: {value}, rule: {rule}")
     if "%" in rule and total_energy:  # 에너지 대비 비율 기준
         percent_limit = extract_float(rule)
         if nutrient == "포화지방(g)":

@@ -8,9 +8,9 @@ standard_df = standard_df.fillna("")
 
 # 인덱스를 기준으로 정렬된 키 생성
 disease_standards = {}
-for disease in df.columns:
+for disease in standard_df.columns:
     sorted_key = ", ".join(sorted([d.strip() for d in disease.split(",")]))
-    disease_standards[sorted_key] = df[disease].to_dict()
+    disease_standards[sorted_key] = standard_df[disease].to_dict()
 # ========== 함수 정의 ==========
 
 def assign_primary_disease(row):

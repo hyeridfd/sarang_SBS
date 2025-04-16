@@ -556,13 +556,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             individual_info = patient_df[patient_df["수급자ID"] == sid][[
                                 "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"
                             ]].iloc[0]
-                            # st.markdown(
-                            #     f"<b>💡{sid}님의 한 끼 영양 기준</b>",
-                            #     f"<b>에너지 {individual_info['개인_에너지(kcal)']} kcal</b>",
-                            #     f"<b>탄수화물 {individual_info['개인_탄수화물(g)'] } g</b>",
-                            #     f"<b>단백질 {individual_info['개인_단백질(g)']} g</b>",
-                            #     f"<b>지방 {individual_info['개인_지방(g)']} g</b>",
-                            #     unsafe_allow_html=True
                             
                             st.markdown(
                                 f"""
@@ -576,15 +569,10 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                 """,
                                 unsafe_allow_html=True
                             )
+                            st.markdown("---")
                             found = True
                             break
                             
-                            st.markdown("---")
-
-                            
-                            
-                    # if results:
-                    #     adjusted_results[disease] = pd.concat(results, ignore_index=True)
                     if results:
                         if disease not in adjusted_results:
                             adjusted_results[disease] = pd.concat(results, ignore_index=True)

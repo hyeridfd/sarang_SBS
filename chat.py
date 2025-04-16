@@ -558,15 +558,15 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             st.markdown(
                                 f"""
                                 <div style='font-size:16px; line-height:1.6'>
-                                🧓 <b>{sid}</b> 정보:
-                                성별 <b>{info_row['성별']}</b> /
-                                나이 <b>{info_row['나이']}세</b> /
-                                신장 <b>{info_row['신장']}cm</b> /
-                                체중 <b>{info_row['체중']}kg</b> /
-                                활동정도 <b>{info_row['활동정도']}</b> /
-                                요양등급 <b>{info_row['요양등급']}</b> /
-                                밥 선택 <b>{info_row['밥']}</b> /
-                                반찬 선택 <b>{info_row['반찬']}</b>
+                                🧓 <b>{sid}님의 정보</b>:
+                                <b>성별:{info_row['성별']}</b> /
+                                <b>나이:{info_row['나이']}세</b> /
+                                <b>키:{info_row['신장']}cm</b> /
+                                <b>체중:{info_row['체중']}kg</b> /
+                                <b>활동수준:{info_row['활동정도']}</b> /
+                                <b>요양등급:{info_row['요양등급']}</b> /
+                                <b>밥 종류:{info_row['밥']}</b> /
+                                <b>반찬 종류:{info_row['반찬']}</b>
                                 </div>
                                 """,
                                 unsafe_allow_html=True
@@ -580,10 +580,10 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                 f"""
                                 <div style='font-size:16px;'>
                                 💡 <b>{sid}님의 한 끼 영양 기준:</b>
-                                에너지 <b>{individual_info['개인_에너지(kcal)']} kcal</b> /
-                                탄수화물 <b>{individual_info['개인_탄수화물(g)']} g</b> /
-                                단백질 <b>{individual_info['개인_단백질(g)']} g</b> /
-                                지방 <b>{individual_info['개인_지방(g)']} g</b>
+                                <b>에너지:{individual_info['개인_에너지(kcal)']} kcal</b> /
+                                <b>탄수화물:{individual_info['개인_탄수화물(g)']} g</b> /
+                                <b>단백질:{individual_info['개인_단백질(g)']} g</b> /
+                                <b>지방:{individual_info['개인_지방(g)']} g</b>
                                 </div>
                                 """,
                                 unsafe_allow_html=True

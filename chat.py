@@ -584,7 +584,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                                 "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
                                             ]
 
-                            st.markdown(f"### {sid}님의 추천 식단 (질환: {disease_label})")
+                            st.markdown(f"### {sid}님의 추천 식단")
                             st.dataframe(match)
             
                             if set(nutrient_cols).issubset(match.columns):

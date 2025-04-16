@@ -643,9 +643,8 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
             for sid in df["수급자ID"].unique():
                 target = df[df["수급자ID"] == sid]
                 total_nutrients = target[[
-                    "에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "식이섬유(g)"
+                    "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
                 ]].sum(numeric_only=True)
-
                 # disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
                 # evaluation = generate_evaluation_summary(total_nutrients, disease_label)
                 # row = {"수급자ID": sid, "질환": disease_label}

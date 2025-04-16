@@ -180,12 +180,12 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     #     if actual < min_val:
     #         needed = min_val - actual
     #         ratio = (adjust_val + needed) / adjust_val
-    #         st.markdown(f"<small>🔺 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
+    #         st.markdown(f"<small>🔻 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
     #         return ratio
     #     elif actual > max_val:
     #         excess = actual - max_val
     #         ratio = (adjust_val - excess) / adjust_val
-    #         st.markdown(f"<small>🔻 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
+    #         st.markdown(f"<small>🔺 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
     #         return ratio
     #     else:
     #         st.markdown(f"<small>✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b></small>", unsafe_allow_html=True)

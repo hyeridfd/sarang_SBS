@@ -90,7 +90,7 @@ def generate_final_results(patient_df, category_df):
     category_order = pd.CategoricalDtype(categories=required_categories, ordered=True)
     final_results = {}
     for disease in disease_types:
-        menus = category_df[category_df["Disease"]== disease]
+        menus = category_df[category_df["Disease"].str.contains(disease, na=False)]
         results = []
         for _, row in patient_df[patient_df["대표질환"] == disease].iterrows():
             patient_id = row["수급자ID"]

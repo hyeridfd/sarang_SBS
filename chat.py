@@ -453,9 +453,9 @@ if st.sidebar.button("🥗 맞춤 식단 솔루션", use_container_width=True):
     st.session_state.mode = "🥗 맞춤 식단 솔루션"
     st.rerun()
 
-if st.sidebar.button("💬 라이프스타일 코칭", use_container_width=True):
-    st.session_state.mode = "💬 라이프스타일 코칭"
-    st.rerun()
+# if st.sidebar.button("💬 라이프스타일 코칭", use_container_width=True):
+#     st.session_state.mode = "💬 라이프스타일 코칭"
+#     st.rerun()
 
 # ================================
 # 🥗 맞춤 식단 솔루션

@@ -643,9 +643,9 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
 
 
         if not adjusted_results:
-            st.warning("⚠️ adjusted_results가 비어 있습니다. 식단 결과가 없어서 엑셀이 비어 있을 수 있어요.")
+            st.warning("⚠️ 사용자 정보가 비어 있습니다. 사용자 정보를 입력해주세요.")
         else:
-            st.success("✅ adjusted_results에 데이터가 있습니다.")
+            st.success("✅ 식단 데이터가 도출되었습니다.")
 
         # 엑셀 다운로드
         output = BytesIO()
@@ -659,6 +659,26 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 )
                 merged.to_excel(writer, sheet_name=disease, index=False)
             eval_df.to_excel(writer, sheet_name="영양기준_충족여부", index=False)
+            workbook  = writer.book
+            worksheet = writer.sheets["영양기준_충족여부"]
+        
+            # '미달' 텍스트가 있는 셀에 빨간 글씨 적용
+            red_format = workbook.add_format({
+                'font_color': 'red',
+                'bold': True
+            })
+        
+            # 전체 DataFrame 크기에 맞춰 범위 계산
+            nrows, ncols = eval_df.shape
+            for col_idx in range(ncols):
+                col_letter = chr(65 + col_idx) if col_idx < 26 else f"{chr(64 + col_idx // 26)}{chr(65 + col_idx % 26)}"
+                cell_range = f"{col_letter}2:{col_letter}{nrows+1}"
+                worksheet.conditional_format(cell_range, {
+                    'type': 'text',
+                    'criteria': 'containing',
+                    'value': '미달',
+                    'format': red_format
+                })
         output.seek(0)
         st.download_button(
             "⬇️ 전체 식단 엑셀 다운로드", 
@@ -667,8 +687,8 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             key=f"download_button_{selected_center}"
         )
-    st.write("category_df['Disease']에 존재하는 질환들:", category_df["Disease"].unique())
-    st.write("patient_df['대표질환'] 값:", patient_df["대표질환"].unique())
-    st.write("patient_df['대표질환'] 유형:", patient_df["대표질환"].dtype)
-    st.write("patient_df['질환'] 값:", patient_df["질환"].unique())
+    # st.write("category_df['Disease']에 존재하는 질환들:", category_df["Disease"].unique())
+    # st.write("patient_df['대표질환'] 값:", patient_df["대표질환"].unique())
+    # st.write("patient_df['대표질환'] 유형:", patient_df["대표질환"].dtype)
+    # st.write("patient_df['질환'] 값:", patient_df["질환"].unique())
 

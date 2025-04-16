@@ -251,6 +251,10 @@ def extract_float(text):
     return float(match.group()) if match else None
 
 def evaluate_nutrient_criteria(nutrient, value, rule):
+    def extract_float(text):
+        match = re.search(r"[-+]?\d*\.?\d+", text)
+        return float(match.group()) if match else None
+        
     if isinstance(rule, str):
         rule = rule.strip()
         if rule.endswith("이하"):
@@ -259,6 +263,9 @@ def evaluate_nutrient_criteria(nutrient, value, rule):
         elif rule.endswith("이상"):
             limit = extract_float(rule)
             return "충족" if value >= limit else "미달"
+        elif rule.endswith("미만"):
+            limit = extract_float(rule)
+            return "충족" if value < limit else "미달"
         elif "~" in rule:
             parts = rule.split("~")
             low = extract_float(parts[0])

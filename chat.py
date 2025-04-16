@@ -561,7 +561,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                 f"<b>에너지 {individual_info['개인_에너지(kcal)']} kcal</b>",
                                 f"<b>탄수화물 {individual_info['개인_탄수화물(g)'] } g</b>",
                                 f"<b>단백질 {individual_info['개인_단백질(g)']} g</b>",
-                                f"<b>지방 {individual_info['개인_지방(g)']} g</b>"
+                                f"<b>지방 {individual_info['개인_지방(g)']} g</b>",
                                 unsafe_allow_html=True
 )
                             found = True

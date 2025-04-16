@@ -576,6 +576,9 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                 """,
                                 unsafe_allow_html=True
                             )
+                            found = True
+                            break
+                            
                             st.markdown("---")
 
                             

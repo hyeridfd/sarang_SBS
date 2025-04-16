@@ -328,23 +328,61 @@ def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
 #         evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule)
 #     return evaluation
     
+# def generate_evaluation_summary(total_nutrients, diseases):
+#     evaluation = {}
+#     total_energy = total_nutrients.get("에너지(kcal)", 0)
+    
+#     for nutrient in [
+#         "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)",
+#         "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"
+#     ]:
+#         rule = None
+#         for d in diseases:
+#             if d in disease_standards and nutrient in disease_standards[d]:
+#                 rule = disease_standards[d][nutrient]
+#                 break
+#         value = total_nutrients.get(nutrient, 0)
+#         evaluation[nutrient + "_기준"] = rule or "없음"
+#         evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule or "")
+#     return evaluation
+
 def generate_evaluation_summary(total_nutrients, diseases):
     evaluation = {}
-    total_energy = total_nutrients.get("에너지(kcal)", 0)
-    
+    disease_key = ", ".join(sorted(diseases))  # 질환명을 알파벳 순서로 정렬하여 키 생성
+    standard = disease_standards.get(disease_key, {})
+
     for nutrient in [
         "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)",
         "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"
     ]:
-        rule = None
-        for d in diseases:
-            if d in disease_standards and nutrient in disease_standards[d]:
-                rule = disease_standards[d][nutrient]
-                break
+        rule = standard.get(nutrient, "")
         value = total_nutrients.get(nutrient, 0)
-        evaluation[nutrient + "_기준"] = rule or "없음"
-        evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule or "")
+        total_energy = total_nutrients.get("에너지(kcal)", 0)
+
+        # 비율(% 기준) 평가 로직 추가
+        if "%" in str(rule) and total_energy:
+            percent_limit = extract_float(rule)
+            if nutrient == "포화지방(g)":
+                ratio = (value * 9 / total_energy) * 100
+            elif nutrient == "지방(g)":
+                ratio = (value * 9 / total_energy) * 100
+            elif nutrient == "단백질(g)":
+                ratio = (value * 4 / total_energy) * 100
+            elif nutrient == "탄수화물(g)":
+                ratio = (value * 4 / total_energy) * 100
+            else:
+                evaluation[nutrient + "_기준"] = rule
+                evaluation[nutrient + "_평가"] = "확인불가"
+                continue
+
+            evaluation[nutrient + "_기준"] = rule
+            evaluation[nutrient + "_평가"] = "충족" if ratio <= percent_limit else "미달"
+        else:
+            evaluation[nutrient + "_기준"] = rule
+            evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule)
+
     return evaluation
+
 
 
 

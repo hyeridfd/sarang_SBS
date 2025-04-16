@@ -2,6 +2,20 @@ import streamlit as st
 import pandas as pd
 from io import BytesIO
 
+standard_df = pd.read_excel("./영양기준.xlsx", sheet_name=0)
+standard_df = standard_df.fillna("")
+
+disease_standards = {}
+for _, row in standard_df.iterrows():
+    disease = row["질환"]
+    disease_standards[disease] = {
+        "식이섬유(g)": row["식이섬유"],
+        "단백질(g)": row["단백질"],
+        "지방(g)": row["지방"],
+        "포화지방(g)": row["포화지방"],
+        "나트륨(mg)": row["나트륨"]
+    }
+
 # ========== 함수 정의 ==========
 
 def assign_disease(row):
@@ -229,6 +243,31 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
 
     return match
 
+def evaluate_nutrient_criteria(nutrient, value, rule):
+    if isinstance(rule, str):
+        rule = rule.strip()
+        if rule.endswith("이하"):
+            limit = float(rule.replace("이하", ""))
+            return "충족" if value <= limit else "미달"
+        elif rule.endswith("이상"):
+            limit = float(rule.replace("이상", ""))
+            return "충족" if value >= limit else "미달"
+        elif "~" in rule:
+            parts = rule.split("~")
+            low, high = float(parts[0].strip()), float(parts[1].strip())
+            return "충족" if low <= value <= high else "미달"
+    return "확인불가"
+
+def generate_evaluation_summary(total_nutrients, disease):
+    standard = disease_standards.get(disease, {})
+    evaluation = {}
+    for nutrient in ["식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)"]:
+        value = total_nutrients.get(nutrient, 0)
+        rule = standard.get(nutrient, "")
+        evaluation[nutrient + "_기준"] = rule
+        evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule)
+    return evaluation
+
 
 # ========== Streamlit 앱 시작 ==========
 
@@ -451,6 +490,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             
                             found = True
                             
+                            
                     # if results:
                     #     adjusted_results[disease] = pd.concat(results, ignore_index=True)
                     if results:
@@ -474,10 +514,24 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                     # if not match.empty:
                     #     match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
                     #     disease_label = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
-                        
+        
+        evaluation_results = []
+        for disease, df in adjusted_results.items():
+            for sid in df["수급자ID"].unique():
+                target = df[df["수급자ID"] == sid]
+                total_nutrients = target[[
+                    "에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "식이섬유(g)"
+                ]].sum(numeric_only=True)
+                disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
+                evaluation = generate_evaluation_summary(total_nutrients, disease_label)
+                row = {"수급자ID": sid, "질환": disease_label}
+                row.update(evaluation)
+                evaluation_results.append(row)
+           
     
             # 엑셀 다운로드
             output = BytesIO()
+            eval_df = pd.DataFrame(evaluation_results)
             with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
                 for disease, df in adjusted_results.items():
                     # 💡 수급자별 영양소 정보 병합
@@ -486,6 +540,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                         on="수급자ID", how="left"
                     )
                     merged.to_excel(writer, sheet_name=disease, index=False)
+                eval_df.to_excel(writer, sheet_name="영양기준_충족여부", index=False)
             output.seek(0)
             st.download_button(
                 "⬇️ 전체 식단 엑셀 다운로드", 
@@ -493,4 +548,3 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 file_name="맞춤_식단_추천.xlsx", 
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
-

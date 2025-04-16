@@ -627,13 +627,13 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 # row.update(evaluation)
                 # evaluation_results.append(row)
 
-                disease_value = patient_df[patient_df["수급자ID"] == sid]["질환"].values
-                if len(disease_value) > 0:
-                    disease_label = disease_value[0]  # 예: "당뇨, 고혈압"
-                    diseases = [d.strip() for d in disease_label.split(",")]  # ['당뇨', '고혈압']
-                else:
-                    disease_label = "질환없음"
-                    diseases = ["질환없음"]
+                disease_value = patient_df[patient_df["수급자ID"] == sid]["대표질환"].values[0]
+                # if len(disease_value) > 0:
+                #     disease_label = disease_value[0]  # 예: "당뇨, 고혈압"
+                #     diseases = [d.strip() for d in disease_label.split(",")]  # ['당뇨', '고혈압']
+                # else:
+                #     disease_label = "질환없음"
+                #     diseases = ["질환없음"]
                 
                 evaluation = generate_evaluation_summary(total_nutrients, diseases)
                 row = {"수급자ID": sid, "질환": disease_label}

@@ -540,7 +540,11 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 total_nutrients = target[[
                     "에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "식이섬유(g)"
                 ]].sum(numeric_only=True)
-                disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
+                disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"].values
+                if len(disease_labels) > 0:
+                    diseases = [d.strip() for d in disease_labels[0].split(",")]
+                else:
+                    diseases = ["질환없음"]
                 evaluation = generate_evaluation_summary(total_nutrients, disease_label)
                 row = {"수급자ID": sid, "질환": disease_label}
                 row.update(evaluation)

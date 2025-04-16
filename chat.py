@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from io import BytesIO
 
-standard_df = pd.read_excel("./영양기준.xlsx", sheet_name=0)
+standard_df = pd.read_excel("./MFDS.xlsx", sheet_name=0)
 standard_df = standard_df.fillna("")
 
 disease_standards = {}

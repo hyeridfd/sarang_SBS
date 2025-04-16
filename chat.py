@@ -10,7 +10,7 @@ for _, row in standard_df.iterrows():
     disease = row["질환"]
     disease_standards[disease] = {
         "에너지(kcal)": row["에너지(kcal)"],
-        "당류(g)": row["당류(g)],
+        "당류(g)": row["당류(g)"],
         "식이섬유(g)": row["식이섬유(g)"],
         "단백질(g)": row["단백질(g)"],
         "지방(g)": row["지방(g)"],

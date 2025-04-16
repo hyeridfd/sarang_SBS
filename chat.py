@@ -180,31 +180,6 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     idxs = adjust_targets.index.tolist()
     
     current_vals = match.loc[idxs, nutrient_cols].sum(numeric_only=True)
-
-
-    # def compute_ratio(actual, min_val, max_val, rice_val):
-    #     if rice_val == 0:
-    #         return 1.0  # 0으로 나누기 방지
-    #     if actual < min_val:
-    #         return (rice_val + (min_val - actual)) / rice_val
-    #     elif actual > max_val:
-    #         return (rice_val - (actual - max_val)) / rice_val
-    #     return 1.0
-
-    # def compute_ratio(actual, min_val, max_val, rice_val, nutrient_name):
-    #     if rice_val == 0:
-    #         return 1.0
-    #     if actual < min_val:
-    #         needed = min_val - actual
-    #         st.info(f"🔺 {nutrient_name}: 부족 {needed:.2f} → 비율 {(rice_val + needed) / rice_val:.2f}")
-    #         return (rice_val + needed) / rice_val
-    #     elif actual > max_val:
-    #         excess = actual - max_val
-    #         st.info(f"🔻 {nutrient_name}: 초과 {excess:.2f} → 비율 {(rice_val - excess) / rice_val:.2f}")
-    #         return (rice_val - excess) / rice_val
-    #     else:
-    #         st.info(f"✅ {nutrient_name}: 기준 충족 → 비율 1.00")
-    #         return 1.0
     
     def compute_ratio(actual, min_val, max_val, adjust_val, name):
         if adjust_val == 0:
@@ -223,20 +198,12 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
             st.markdown(f"<small>✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b></small>", unsafe_allow_html=True)
             return 1.0
 
-
     # ratios = [
-    #     compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_rice["에너지(kcal)"], "에너지"),
-    #     compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_rice["탄수화물(g)"], "탄수화물"),
-    #     compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_rice["단백질(g)"], "단백질"),
-    #     compute_ratio(totals["지방(g)"], fat_min, fat_max, current_rice["지방(g)"], "지방")
+    #     compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
+    #     compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_vals["탄수화물(g)"], "탄수화물"),
+    #     compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_vals["단백질(g)"], "단백질"),
+    #     compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
     # ]
-
-    ratios = [
-        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
-        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_vals["탄수화물(g)"], "탄수화물"),
-        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_vals["단백질(g)"], "단백질"),
-        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
-    ]
     
     # 가장 조정이 필요한 비율 (1에서 가장 멀리 떨어진 값)
     most_significant_ratio = max(ratios, key=lambda r: abs(r - 1.0))
@@ -254,42 +221,11 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
 def extract_float(text):
     match = re.search(r"[-+]?\d*\.?\d+", str(text))
     return float(match.group()) if match else None
-    
-# def evaluate_nutrient_criteria(nutrient, value, rule):
-#     rule = str(rule).strip()
-#     if rule.endswith("이하"):
-#         limit = extract_float(rule)
-#         return "충족" if value <= limit else "미달"
-#     elif rule.endswith("이상"):
-#         limit = extract_float(rule)
-#         return "충족" if value >= limit else "미달"
-#     elif rule.endswith("미만"):
-#         limit = extract_float(rule)
-#         return "충족" if value < limit else "미달"
-#     elif "~" in rule:
-#         parts = rule.split("~")
-#         low, high = extract_float(parts[0]), extract_float(parts[1])
-#         return "충족" if low <= value <= high else "미달"
-#     return "확인불가"
 
 def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
     rule = str(rule).strip()
     print(f"🔍 기준 판별 → nutrient: {nutrient}, value: {value}, rule: {rule}")
-    
-    # if "%" in rule and total_energy:  # 에너지 대비 비율 기준
-    #     percent_limit = extract_float(rule)
-    #     if nutrient == "포화지방(g)":
-    #         ratio = (value * 9 / total_energy) * 100
-    #     elif nutrient == "지방(g)":
-    #         ratio = (value * 9 / total_energy) * 100
-    #     elif nutrient == "단백질(g)":
-    #         ratio = (value * 4 / total_energy) * 100
-    #     elif nutrient == "탄수화물(g)":
-    #         ratio = (value * 4 / total_energy) * 100
-    #     elif nutrient == "당류(g)":
-    #         ratio = (value * 4 / total_energy) * 100
-    #     else:
-    #         return ""
+
 
     if "%" in rule and total_energy:
         if nutrient in ["포화지방(g)", "지방(g)"]:
@@ -350,36 +286,6 @@ def generate_evaluation_summary(total_nutrients, diseases):
         evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule, total_energy)
 
     return evaluation
-
-        
-        # # 비율(% 기준) 평가 로직 추가
-        # if "%" in str(rule) and total_energy:
-        #     percent_limit = extract_float(rule)
-        #     if nutrient == "포화지방(g)":
-        #         ratio = (value * 9 / total_energy) * 100
-        #     elif nutrient == "지방(g)":
-        #         ratio = (value * 9 / total_energy) * 100
-        #     elif nutrient == "단백질(g)":
-        #         ratio = (value * 4 / total_energy) * 100
-        #     elif nutrient == "탄수화물(g)":
-        #         ratio = (value * 4 / total_energy) * 100
-        #     elif nutrient == "당류(g)":
-        #         ratio = (value * 4 / total_energy) * 100
-        #     else:
-        #         evaluation[nutrient + "_기준"] = rule
-        #         evaluation[nutrient + "_평가"] = "확인불가"
-        #         continue
-
-        #     evaluation[nutrient + "_기준"] = rule
-        #     evaluation[nutrient + "_평가"] = "충족" if ratio <= percent_limit else "미달"
-        # else:
-        #     evaluation[nutrient + "_기준"] = rule
-        #     evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule)
-
-    return evaluation
-
-
-
 
 # ========== Streamlit 앱 시작 ==========
 
@@ -592,9 +498,16 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
 
                             st.markdown(f"### {sid}님의 추천 식단")
                             st.dataframe(match)
+
+                            ratios = [
+                                        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
+                                        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_vals["탄수화물(g)"], "탄수화물"),
+                                        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_vals["단백질(g)"], "단백질"),
+                                        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
+                                    ]
             
                             if set(nutrient_cols).issubset(match.columns):
-                                st.markdown("#### 🧪 실제 메뉴 영양소 총합")
+                                st.markdown("#### 👩🏻‍⚕️ 메뉴 영양성분 정보")
                                 total_nutrients = match[nutrient_cols].sum(numeric_only=True)
                                 for col in nutrient_cols:
                                     st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")

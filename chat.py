@@ -4,8 +4,8 @@ from io import BytesIO
 import re
 
 standard_df = pd.read_excel("./MFDS.xlsx", sheet_name=0, index_col=0)
-standard_df = standard_df.T
 standard_df = standard_df.fillna("")
+standard_df = standard_df.T
 
 disease_standards = {}
 for disease, row in standard_df.iterrows():
@@ -273,18 +273,32 @@ def evaluate_nutrient_criteria(nutrient, value, rule):
             return "충족" if low <= value <= high else "미달"
     return "확인불가"
 
-def generate_evaluation_summary(total_nutrients, disease):
-    standard = disease_standards.get(disease, {})
-    evaluation = {}
-    for nutrient in [
-        "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)", 
-        "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"
-    ]:
-        value = total_nutrients.get(nutrient, 0)
-        rule = standard.get(nutrient, "")
-        evaluation[nutrient + "_기준"] = rule
-        evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule)
-    return evaluation
+# def generate_evaluation_summary(total_nutrients, disease):
+#     standard = disease_standards.get(disease, {})
+#     evaluation = {}
+#     for nutrient in [
+#         "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)", 
+#         "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"
+#     ]:
+#         value = total_nutrients.get(nutrient, 0)
+#         rule = standard.get(nutrient, "")
+#         evaluation[nutrient + "_기준"] = rule
+#         evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule)
+#     return evaluation
+    
+def generate_evaluation_summary(total_nutrients, diseases):
+evaluation = {}
+for nutrient in ["식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)"]:
+    rule = None
+    for d in diseases:
+        if d in disease_standards and disease_standards[d].get(nutrient):
+            rule = disease_standards[d][nutrient]
+            break  # 첫 번째 매칭 기준을 우선 적용 (or 나중에 가장 엄격한 기준 선택 로직 가능)
+    value = total_nutrients.get(nutrient, 0)
+    evaluation[nutrient + "_기준"] = rule or "없음"
+    evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule or "")
+return evaluation
+
 
 
 # ========== Streamlit 앱 시작 ==========
@@ -540,16 +554,19 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 total_nutrients = target[[
                     "에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "식이섬유(g)"
                 ]].sum(numeric_only=True)
-                disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"].values
-                if len(disease_labels) > 0:
-                    diseases = [d.strip() for d in disease_labels[0].split(",")]
+
+                disease_value = patient_df[patient_df["수급자ID"] == sid]["질환"].values
+                if len(disease_value) > 0:
+                    disease_label = disease_value[0]  # 예: "당뇨, 고혈압"
+                    diseases = [d.strip() for d in disease_label.split(",")]  # ['당뇨', '고혈압']
                 else:
+                    disease_label = "질환없음"
                     diseases = ["질환없음"]
-                evaluation = generate_evaluation_summary(total_nutrients, disease_label)
+                
+                evaluation = generate_evaluation_summary(total_nutrients, diseases)
                 row = {"수급자ID": sid, "질환": disease_label}
                 row.update(evaluation)
-                evaluation_results.append(row)
-           
+                evaluation_results.append(row)               
     
         # 엑셀 다운로드
         output = BytesIO()

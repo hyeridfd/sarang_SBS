@@ -553,7 +553,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             #     for col in nutrient_cols:
                             #         st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")
             
-                            # results.append(match)
+                            results.append(match)
 
                             info_row = patient_df[patient_df["수급자ID"] == sid].iloc[0]
                             # 기본 정보 + 개인 영양 기준

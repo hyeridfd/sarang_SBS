@@ -174,29 +174,67 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     
     current_vals = match.loc[idxs, nutrient_cols].sum(numeric_only=True)
     
+    # def compute_ratio(actual, min_val, max_val, adjust_val, name):
+    #     if adjust_val == 0:
+    #         return 1.0
+    #     if actual < min_val:
+    #         needed = min_val - actual
+    #         ratio = (adjust_val + needed) / adjust_val
+    #         st.markdown(f"<small>🔺 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
+    #         return ratio
+    #     elif actual > max_val:
+    #         excess = actual - max_val
+    #         ratio = (adjust_val - excess) / adjust_val
+    #         st.markdown(f"<small>🔻 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
+    #         return ratio
+    #     else:
+    #         st.markdown(f"<small>✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b></small>", unsafe_allow_html=True)
+    #         return 1.0
+            
     def compute_ratio(actual, min_val, max_val, adjust_val, name):
         if adjust_val == 0:
-            return 1.0
+            return 1.0, f"✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b>"
+    
         if actual < min_val:
             needed = min_val - actual
             ratio = (adjust_val + needed) / adjust_val
-            st.markdown(f"<small>🔺 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
-            return ratio
+            return ratio, f"🔺 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b>"
+    
         elif actual > max_val:
             excess = actual - max_val
             ratio = (adjust_val - excess) / adjust_val
-            st.markdown(f"<small>🔻 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
-            return ratio
-        else:
-            st.markdown(f"<small>✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b></small>", unsafe_allow_html=True)
-            return 1.0
+            return ratio, f"🔻 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b>"
+    
+        return 1.0, f"✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b>"
 
-    ratios = [
-        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
-        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_vals["탄수화물(g)"], "탄수화물"),
-        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_vals["단백질(g)"], "단백질"),
-        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
-    ]
+            
+    ratio_msgs = []
+    ratios = []
+    for nutrient, min_val, max_val in zip(
+        ["에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)"],
+        [kcal_min, carb_min, protein_min, fat_min],
+        [kcal_max, carb_max, protein_max, fat_max]
+    ):
+        ratio, msg = compute_ratio(totals[nutrient], min_val, max_val, current_vals[nutrient], nutrient.replace("(g)", "").replace("(kcal)", "").strip())
+        ratios.append(ratio)
+        ratio_msgs.append(msg)
+        
+    st.markdown(
+        f"""
+        <div style="display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 0;">
+            {"".join([f"<div style='white-space: nowrap; font-size: 14px;'>{m}</div>" for m in ratio_msgs])}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # ratios = [
+    #     compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
+    #     compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_vals["탄수화물(g)"], "탄수화물"),
+    #     compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_vals["단백질(g)"], "단백질"),
+    #     compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
+    # ]
     
     # 가장 조정이 필요한 비율 (1에서 가장 멀리 떨어진 값)
     most_significant_ratio = max(ratios, key=lambda r: abs(r - 1.0))

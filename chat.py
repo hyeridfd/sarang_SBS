@@ -21,7 +21,7 @@ for disease, row in standard_df.iterrows():
     }
 # ========== 함수 정의 ==========
 
-def assign_disease(row):
+def assign_primary_disease(row):
     if row["연하곤란"] == 1:
         return "연하곤란"
     elif row["고혈압"] == 1 and row["신장질환"] == 1:
@@ -37,6 +37,13 @@ def assign_disease(row):
     elif row["당뇨"] == 1:
         return "당뇨"
     return "질환없음"
+
+def assign_all_diseases(row):
+    diseases = []
+    for d in ["당뇨", "고혈압", "신장질환", "연하곤란"]:
+        if row[d] == 1:
+            diseases.append(d)
+    return ", ".join(diseases) if diseases else "질환없음"
 
 def get_meal_option(rice, side, disease):
     replace_rice = None
@@ -247,30 +254,24 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     return match
 
 def extract_float(text):
-    match = re.search(r"[-+]?\d*\.?\d+", text)
+    match = re.search(r"[-+]?\d*\.?\d+", str(text))
     return float(match.group()) if match else None
-
+    
 def evaluate_nutrient_criteria(nutrient, value, rule):
-    def extract_float(text):
-        match = re.search(r"[-+]?\d*\.?\d+", text)
-        return float(match.group()) if match else None
-        
-    if isinstance(rule, str):
-        rule = rule.strip()
-        if rule.endswith("이하"):
-            limit = extract_float(rule)
-            return "충족" if value <= limit else "미달"
-        elif rule.endswith("이상"):
-            limit = extract_float(rule)
-            return "충족" if value >= limit else "미달"
-        elif rule.endswith("미만"):
-            limit = extract_float(rule)
-            return "충족" if value < limit else "미달"
-        elif "~" in rule:
-            parts = rule.split("~")
-            low = extract_float(parts[0])
-            high = extract_float(parts[1])
-            return "충족" if low <= value <= high else "미달"
+    rule = str(rule).strip()
+    if rule.endswith("이하"):
+        limit = extract_float(rule)
+        return "충족" if value <= limit else "미달"
+    elif rule.endswith("이상"):
+        limit = extract_float(rule)
+        return "충족" if value >= limit else "미달"
+    elif rule.endswith("미만"):
+        limit = extract_float(rule)
+        return "충족" if value < limit else "미달"
+    elif "~" in rule:
+        parts = rule.split("~")
+        low, high = extract_float(parts[0]), extract_float(parts[1])
+        return "충족" if low <= value <= high else "미달"
     return "확인불가"
 
 # def generate_evaluation_summary(total_nutrients, disease):
@@ -289,14 +290,14 @@ def evaluate_nutrient_criteria(nutrient, value, rule):
 def generate_evaluation_summary(total_nutrients, diseases):
     evaluation = {}
     for nutrient in [
-         "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)", 
-         "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"
-     ]:
+        "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)",
+        "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"
+    ]:
         rule = None
         for d in diseases:
-            if d in disease_standards and disease_standards[d].get(nutrient):
+            if d in disease_standards and nutrient in disease_standards[d]:
                 rule = disease_standards[d][nutrient]
-                break  # 첫 번째 매칭 기준을 우선 적용 (or 나중에 가장 엄격한 기준 선택 로직 가능)
+                break
         value = total_nutrients.get(nutrient, 0)
         evaluation[nutrient + "_기준"] = rule or "없음"
         evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule or "")
@@ -404,7 +405,8 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
         category_df = category_df[category_df["Category"].isin(["밥", "국", "주찬", "부찬1", "부찬2", "김치"])]
         patient_df = pd.read_excel(patient_file, sheet_name=0)
     
-        patient_df["질환"] = patient_df.apply(assign_disease, axis=1)
+        patient_df["대표질환"] = patient_df.apply(assign_primary_disease, axis=1)
+        patient_df["질환"] = patient_df.apply(assign_all_diseases, axis=1)
         patient_df["식단옵션"] = patient_df.apply(lambda row: get_meal_option(row["밥"], row["반찬"], row["질환"]), axis=1)
 
         patient_df["표시질환"] = patient_df.apply(lambda row: "질환없음" if (
@@ -558,11 +560,25 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                     "에너지(kcal)", "탄수화물(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "식이섬유(g)"
                 ]].sum(numeric_only=True)
 
-                disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
-                evaluation = generate_evaluation_summary(total_nutrients, disease_label)
+                # disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
+                # evaluation = generate_evaluation_summary(total_nutrients, disease_label)
+                # row = {"수급자ID": sid, "질환": disease_label}
+                # row.update(evaluation)
+                # evaluation_results.append(row)
+
+                disease_value = patient_df[patient_df["수급자ID"] == sid]["질환"].values
+                if len(disease_value) > 0:
+                    disease_label = disease_value[0]  # 예: "당뇨, 고혈압"
+                    diseases = [d.strip() for d in disease_label.split(",")]  # ['당뇨', '고혈압']
+                else:
+                    disease_label = "질환없음"
+                    diseases = ["질환없음"]
+                
+                evaluation = generate_evaluation_summary(total_nutrients, diseases)
                 row = {"수급자ID": sid, "질환": disease_label}
                 row.update(evaluation)
-                evaluation_results.append(row)               
+                evaluation_results.append(row)
+
     
         # 엑셀 다운로드
         output = BytesIO()

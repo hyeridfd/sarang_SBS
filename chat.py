@@ -329,7 +329,7 @@ def generate_evaluation_summary(total_nutrients, diseases):
     evaluation = {}
     disease_key = ", ".join(sorted([d.strip() for d in diseases]))  # 질환명을 알파벳 순서로 정렬하여 키 생성
     standard = disease_standards.get(disease_key, {})
-    st.write("📋 현재 기준표에 등록된 키 목록:", list(disease_standards.keys()))
+    #st.write("📋 현재 기준표에 등록된 키 목록:", list(disease_standards.keys()))
 
     total_energy = total_nutrients.get("에너지(kcal)", 0)
 

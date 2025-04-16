@@ -100,7 +100,10 @@ def generate_final_results(patient_df, category_df):
                 customized = apply_meal_customization(selected, option)
                 customized["Category"] = customized["Category"].astype(category_order)
                 customized = customized.sort_values("Category")
-                #customized.insert(0, "질환", disease)
+
+                if "Disease" in customized.columns:
+                    customized = customized.drop(columns=["Disease"])
+       
                 customized.insert(0, "수급자ID", patient_id)
                 diseases = patient_df.loc[patient_df["수급자ID"] == patient_id, "질환"].values
                 if len(diseases) > 0:

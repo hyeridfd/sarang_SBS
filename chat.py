@@ -3,15 +3,14 @@ import pandas as pd
 from io import BytesIO
 import re
 
-standard_df = pd.read_excel("./MFDS.xlsx", sheet_name=0, header=0)
-standard_df = standard_df.set_index(standard_df.columns[0]).T
-standard_df.index.name = "질환"
+standard_df = pd.read_excel("./MFDS.xlsx", sheet_name=0, index_col=0)
 standard_df = standard_df.fillna("")
 
+# 인덱스를 기준으로 정렬된 키 생성
 disease_standards = {}
-for disease, row in standard_df.iterrows():
-    sorted_key = ", ".join(sorted([d.strip() for d in disease.split(",")]))  # <-- 정렬 + 공백 제거
-    disease_standards[sorted_key] = row.to_dict()
+for disease in df.columns:
+    sorted_key = ", ".join(sorted([d.strip() for d in disease.split(",")]))
+    disease_standards[sorted_key] = df[disease].to_dict()
 # ========== 함수 정의 ==========
 
 def assign_primary_disease(row):

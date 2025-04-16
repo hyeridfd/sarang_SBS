@@ -276,7 +276,10 @@ def evaluate_nutrient_criteria(nutrient, value, rule):
 def generate_evaluation_summary(total_nutrients, disease):
     standard = disease_standards.get(disease, {})
     evaluation = {}
-    for nutrient in ["식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)"]:
+    for nutrient in [
+        "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)", 
+        "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"
+    ]:
         value = total_nutrients.get(nutrient, 0)
         rule = standard.get(nutrient, "")
         evaluation[nutrient + "_기준"] = rule

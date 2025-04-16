@@ -102,6 +102,9 @@ def generate_final_results(patient_df, category_df):
                 customized = customized.sort_values("Category")
                 #customized.insert(0, "질환", disease)
                 customized.insert(0, "수급자ID", patient_id)
+                diseases = patient_df.loc[patient_df["수급자ID"] == patient_id, "질환"].values
+                if len(diseases) > 0:
+                    customized.insert(1, "질환", diseases[0])  # 수급자ID 다음 열에 삽입
                 results.append(customized)
         if results:
             final_results[disease] = pd.concat(results, ignore_index=True)

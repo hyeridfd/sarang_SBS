@@ -416,6 +416,8 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
     if menu_file and patient_file:
         category_df = pd.read_excel(menu_file, sheet_name="category")
         category_df = category_df[category_df["Category"].isin(["밥", "국", "주찬", "부찬1", "부찬2", "김치"])]
+        category_df = category_df[category_df["Disease"] != "저작곤란"]
+        
         patient_df = pd.read_excel(patient_file, sheet_name=0)
     
         patient_df["대표질환"] = patient_df.apply(assign_primary_disease, axis=1)

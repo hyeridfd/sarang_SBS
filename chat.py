@@ -564,5 +564,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
             "⬇️ 전체 식단 엑셀 다운로드", 
             data=output, 
             file_name="맞춤_식단_추천.xlsx", 
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            key=f"download_button_{selected_center}"
         )

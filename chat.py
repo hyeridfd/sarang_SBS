@@ -287,6 +287,8 @@ def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
             ratio = (value * 4 / total_energy) * 100
         elif nutrient == "탄수화물(g)":
             ratio = (value * 4 / total_energy) * 100
+        elif nutrient == "당류(g)":
+            ratio = (value * 4 / total_energy) * 100
         else:
             return "확인불가"
         
@@ -370,6 +372,8 @@ def generate_evaluation_summary(total_nutrients, diseases):
             elif nutrient == "단백질(g)":
                 ratio = (value * 4 / total_energy) * 100
             elif nutrient == "탄수화물(g)":
+                ratio = (value * 4 / total_energy) * 100
+            elif nutrient == "당류(g)":
                 ratio = (value * 4 / total_energy) * 100
             else:
                 evaluation[nutrient + "_기준"] = rule

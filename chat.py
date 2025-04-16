@@ -666,3 +666,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             key=f"download_button_{selected_center}"
         )
+    st.write("category_df['Disease']에 존재하는 질환들:", category_df["Disease"].unique())
+    st.write("patient_df['대표질환'] 값:", patient_df["대표질환"].unique())
+

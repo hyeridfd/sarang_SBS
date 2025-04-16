@@ -527,10 +527,10 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                                 "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
                                             ]
 
-                            st.markdown(f"### {sid}님의 추천 식단")
+                            st.markdown(f"### 👩🏻‍⚕️ {sid}님의 추천 식단")
                             table_with_total = match.copy()
                             nutrient_cols = [
-                                "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
+                                "총 중량", "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
                                 "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
                             ]
                             totals = table_with_total[nutrient_cols].sum(numeric_only=True)
@@ -538,22 +538,20 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             # 마지막 줄에 총합 row 추가
                             total_row = {col: totals[col] for col in nutrient_cols}
                             total_row.update({
-                                "수급자ID": sid,
-                                "질환": patient_df[patient_df["수급자ID"] == sid]["질환"].values[0],
-                                "Menu": "총합계", "Category": "",  # 메뉴/카테고리엔 빈칸 or 총합계
+                                "Menu": "총합계", "Category": ""  # 메뉴/카테고리엔 빈칸 or 총합계
                             })
                             table_with_total = pd.concat([table_with_total, pd.DataFrame([total_row])], ignore_index=True)
                             
                             # 표 출력
                             st.dataframe(table_with_total)
 
-                            if set(nutrient_cols).issubset(match.columns):
-                                st.markdown("#### 👩🏻‍⚕️ 메뉴 영양성분 정보")
-                                total_nutrients = match[nutrient_cols].sum(numeric_only=True)
-                                for col in nutrient_cols:
-                                    st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")
+                            # if set(nutrient_cols).issubset(match.columns):
+                            #     st.markdown("#### 👩🏻‍⚕️ 메뉴 영양성분 정보")
+                            #     total_nutrients = match[nutrient_cols].sum(numeric_only=True)
+                            #     for col in nutrient_cols:
+                            #         st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")
             
-                            results.append(match)
+                            # results.append(match)
                             
                             found = True
                             st.markdown("-----------------------------------------")

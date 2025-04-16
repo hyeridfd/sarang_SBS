@@ -547,22 +547,22 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 evaluation_results.append(row)
            
     
-            # 엑셀 다운로드
-            output = BytesIO()
-            eval_df = pd.DataFrame(evaluation_results)
-            with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-                for disease, df in adjusted_results.items():
-                    # 💡 수급자별 영양소 정보 병합
-                    merged = df.merge(
-                        patient_df[["수급자ID", "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]],
-                        on="수급자ID", how="left"
-                    )
-                    merged.to_excel(writer, sheet_name=disease, index=False)
-                eval_df.to_excel(writer, sheet_name="영양기준_충족여부", index=False)
-            output.seek(0)
-            st.download_button(
-                "⬇️ 전체 식단 엑셀 다운로드", 
-                data=output, 
-                file_name="맞춤_식단_추천.xlsx", 
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
+        # 엑셀 다운로드
+        output = BytesIO()
+        eval_df = pd.DataFrame(evaluation_results)
+        with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+            for disease, df in adjusted_results.items():
+                # 💡 수급자별 영양소 정보 병합
+                merged = df.merge(
+                    patient_df[["수급자ID", "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]],
+                    on="수급자ID", how="left"
+                )
+                merged.to_excel(writer, sheet_name=disease, index=False)
+            eval_df.to_excel(writer, sheet_name="영양기준_충족여부", index=False)
+        output.seek(0)
+        st.download_button(
+            "⬇️ 전체 식단 엑셀 다운로드", 
+            data=output, 
+            file_name="맞춤_식단_추천.xlsx", 
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )

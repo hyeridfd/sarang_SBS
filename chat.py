@@ -553,10 +553,29 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
             
                             # results.append(match)
 
-                            individual_info = patient_df[patient_df["수급자ID"] == sid][[
+                            info_row = patient_df[patient_df["수급자ID"] == sid].iloc[0]
+                            # 기본 정보 + 개인 영양 기준
+                            st.markdown(
+                                f"""
+                                <div style='font-size:16px; line-height:1.6'>
+                                🧓 <b>{sid}</b> 정보:
+                                성별 <b>{info_row['성별']}</b> /
+                                나이 <b>{info_row['나이']}세</b> /
+                                신장 <b>{info_row['신장']}cm</b> /
+                                체중 <b>{info_row['체중']}kg</b> /
+                                활동정도 <b>{info_row['활동정도']}</b> /
+                                요양등급 <b>{info_row['요양등급']}</b> /
+                                밥 선택 <b>{info_row['밥']}</b> /
+                                반찬 선택 <b>{info_row['반찬']}</b>
+                                </div>
+                                """,
+                                unsafe_allow_html=True
+                            )
+                            
+                             individual_info = patient_df[patient_df["수급자ID"] == sid][[
                                 "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"
                             ]].iloc[0]
-                            
+
                             st.markdown(
                                 f"""
                                 <div style='font-size:16px;'>

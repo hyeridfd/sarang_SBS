@@ -563,9 +563,19 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                                 f"<b>단백질 {individual_info['개인_단백질(g)']} g</b>",
                                 f"<b>지방 {individual_info['개인_지방(g)']} g</b>",
                                 unsafe_allow_html=True
-)
-                            found = True
-                            st.markdown("-----------------------------------------")
+                            st.markdown(
+                                f"""
+                                <div style='font-size:16px;'>
+                                💡 <b>{sid}님의 한 끼 영양 기준:</b>
+                                에너지 <b>{individual_info['개인_에너지(kcal)']} kcal</b> /
+                                탄수화물 <b>{individual_info['개인_탄수화물(g)']} g</b> /
+                                단백질 <b>{individual_info['개인_단백질(g)']} g</b> /
+                                지방 <b>{individual_info['개인_지방(g)']} g</b>
+                                </div>
+                                """,
+                                unsafe_allow_html=True
+                            )
+                            st.markdown("---")
 
                             
                             

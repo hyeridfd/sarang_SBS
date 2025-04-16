@@ -245,18 +245,23 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
 
     return match
 
+def extract_float(text):
+    match = re.search(r"[-+]?\d*\.?\d+", text)
+    return float(match.group()) if match else None
+
 def evaluate_nutrient_criteria(nutrient, value, rule):
     if isinstance(rule, str):
         rule = rule.strip()
         if rule.endswith("이하"):
-            limit = float(rule.replace("이하", ""))
+            limit = extract_float(rule)
             return "충족" if value <= limit else "미달"
         elif rule.endswith("이상"):
-            limit = float(rule.replace("이상", ""))
+            limit = extract_float(rule)
             return "충족" if value >= limit else "미달"
         elif "~" in rule:
             parts = rule.split("~")
-            low, high = float(parts[0].strip()), float(parts[1].strip())
+            low = extract_float(parts[0])
+            high = extract_float(parts[1])
             return "충족" if low <= value <= high else "미달"
     return "확인불가"
 

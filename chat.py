@@ -295,13 +295,12 @@ def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
     #         return ""
 
     if "%" in rule and total_energy:
-    if nutrient in ["포화지방(g)", "지방(g)"]:
-        ratio = (value * 9 / total_energy) * 100
-    elif nutrient in ["단백질(g)", "탄수화물(g)", "당류(g)"]:
-        ratio = (value * 4 / total_energy) * 100
-    else:
-        return ""
-
+        if nutrient in ["포화지방(g)", "지방(g)"]:
+            ratio = (value * 9 / total_energy) * 100
+        elif nutrient in ["단백질(g)", "탄수화물(g)", "당류(g)"]:
+            ratio = (value * 4 / total_energy) * 100
+        else:
+            return ""
 
         if "~" in rule:
             parts = rule.replace("%", "").split("~")

@@ -625,7 +625,6 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 ]].sum(numeric_only=True)
                 # disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
                 # evaluation = generate_evaluation_summary(total_nutrients, disease_label)
-                row = {"수급자ID": sid, "질환": disease_label}
                 # row.update(evaluation)
                 # evaluation_results.append(row)
                 disease_value = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
@@ -638,7 +637,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                 #     diseases = ["질환없음"]
                 
                 evaluation = generate_evaluation_summary(total_nutrients, diseases)
-                row = {"수급자ID": sid, "질환": disease_label}
+                row = {"수급자ID": sid, "질환": disease_value}
                 row.update(evaluation)
                 evaluation_results.append(row)
 

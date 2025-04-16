@@ -3,7 +3,7 @@ import pandas as pd
 from io import BytesIO
 import re
 
-standard_df = pd.read_excel("./MFDS.xlsx", sheet_name=0, index_col=0)
+standard_df = pd.read_excel("./MFDS(1).xlsx", sheet_name=0, index_col=0)
 standard_df = standard_df.fillna("")
 
 # 인덱스를 기준으로 정렬된 키 생성

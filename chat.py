@@ -9,7 +9,8 @@ standard_df = standard_df.T
 
 disease_standards = {}
 for disease, row in standard_df.iterrows():
-    disease_standards[disease] = {
+    sorted_key = ", ".join(sorted([d.strip() for d in disease.split(",")]))  # <-- 정렬 + 공백 제거
+    disease_standards[sorted_key] = {
         "에너지(kcal)": row["에너지(kcal)"],
         "당류(g)": row["당류(g)"],
         "식이섬유(g)": row["식이섬유(g)"],

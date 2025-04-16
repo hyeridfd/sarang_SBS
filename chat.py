@@ -290,7 +290,7 @@ def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
         elif nutrient == "당류(g)":
             ratio = (value * 4 / total_energy) * 100
         else:
-            return "확인불가"
+            return ""
         
         if "이하" in rule:
             return "충족" if ratio <= percent_limit else "미달"
@@ -298,7 +298,7 @@ def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
             return "충족" if ratio < percent_limit else "미달"
         elif "이상" in rule:
             return "충족" if ratio >= percent_limit else "미달"
-        return "확인불가"
+        return ""
 
     # 일반 수치 기준 처리
     if rule.endswith("이하"):
@@ -315,7 +315,7 @@ def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
         low, high = extract_float(parts[0]), extract_float(parts[1])
         return "충족" if low <= value <= high else "미달"
 
-    return "확인불가"
+    return ""
 
 
 # def generate_evaluation_summary(total_nutrients, disease):

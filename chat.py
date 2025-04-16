@@ -198,12 +198,12 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
         if actual < min_val:
             needed = min_val - actual
             ratio = (adjust_val + needed) / adjust_val
-            return ratio, f"🔺 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b>"
+            return ratio, f"🔻 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b>"
     
         elif actual > max_val:
             excess = actual - max_val
             ratio = (adjust_val - excess) / adjust_val
-            return ratio, f"🔻 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b>"
+            return ratio, f"🔺 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b>"
     
         return 1.0, f"✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b>"
 

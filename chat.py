@@ -287,17 +287,20 @@ def evaluate_nutrient_criteria(nutrient, value, rule):
 #     return evaluation
     
 def generate_evaluation_summary(total_nutrients, diseases):
-evaluation = {}
-for nutrient in ["식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)"]:
-    rule = None
-    for d in diseases:
-        if d in disease_standards and disease_standards[d].get(nutrient):
-            rule = disease_standards[d][nutrient]
-            break  # 첫 번째 매칭 기준을 우선 적용 (or 나중에 가장 엄격한 기준 선택 로직 가능)
-    value = total_nutrients.get(nutrient, 0)
-    evaluation[nutrient + "_기준"] = rule or "없음"
-    evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule or "")
-return evaluation
+    evaluation = {}
+    for nutrient in [
+         "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)", 
+         "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"
+     ]:
+        rule = None
+        for d in diseases:
+            if d in disease_standards and disease_standards[d].get(nutrient):
+                rule = disease_standards[d][nutrient]
+                break  # 첫 번째 매칭 기준을 우선 적용 (or 나중에 가장 엄격한 기준 선택 로직 가능)
+        value = total_nutrients.get(nutrient, 0)
+        evaluation[nutrient + "_기준"] = rule or "없음"
+        evaluation[nutrient + "_평가"] = evaluate_nutrient_criteria(nutrient, value, rule or "")
+    return evaluation
 
 
 

@@ -7,8 +7,7 @@ standard_df = standard_df.T
 standard_df = standard_df.fillna("")
 
 disease_standards = {}
-for _, row in standard_df.iterrows():
-    disease = row["질환"]
+for disease, row in standard_df.iterrows():
     disease_standards[disease] = {
         "에너지(kcal)": row["에너지(kcal)"],
         "당류(g)": row["당류(g)"],
@@ -17,9 +16,8 @@ for _, row in standard_df.iterrows():
         "지방(g)": row["지방(g)"],
         "포화지방(g)": row["포화지방(g)"],
         "나트륨(mg)": row["나트륨(mg)"],
-        "칼륨(mg)":row["칼륨(mg)"]
+        "칼륨(mg)": row["칼륨(mg)"]
     }
-
 # ========== 함수 정의 ==========
 
 def assign_disease(row):

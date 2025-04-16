@@ -277,6 +277,7 @@ def extract_float(text):
 def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
     rule = str(rule).strip()
     print(f"🔍 기준 판별 → nutrient: {nutrient}, value: {value}, rule: {rule}")
+    
     if "%" in rule and total_energy:  # 에너지 대비 비율 기준
         percent_limit = extract_float(rule)
         if nutrient == "포화지방(g)":
@@ -291,13 +292,19 @@ def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
             ratio = (value * 4 / total_energy) * 100
         else:
             return ""
-        
+
+        if "~" in rule:
+            parts = rule.replace("%", "").split("~")
+            low, high = extract_float(parts[0]), extract_float(parts[1])
+            return "충족" if low <= ratio <= high else "미달"
+            
+        limit = extract_float(rule)
         if "이하" in rule:
-            return "충족" if ratio <= percent_limit else "미달"
+            return "충족" if ratio <= limit else "미달"
         elif "미만" in rule:
-            return "충족" if ratio < percent_limit else "미달"
+            return "충족" if ratio < limit else "미달"
         elif "이상" in rule:
-            return "충족" if ratio >= percent_limit else "미달"
+            return "충족" if ratio >= limit else "미달"
         return ""
 
     # 일반 수치 기준 처리

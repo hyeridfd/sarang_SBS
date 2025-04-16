@@ -181,22 +181,22 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     
     current_vals = match.loc[idxs, nutrient_cols].sum(numeric_only=True)
     
-    def compute_ratio(actual, min_val, max_val, adjust_val, name):
-        if adjust_val == 0:
-            return 1.0
-        if actual < min_val:
-            needed = min_val - actual
-            ratio = (adjust_val + needed) / adjust_val
-            st.markdown(f"<small>🔺 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
-            return ratio
-        elif actual > max_val:
-            excess = actual - max_val
-            ratio = (adjust_val - excess) / adjust_val
-            st.markdown(f"<small>🔻 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
-            return ratio
-        else:
-            st.markdown(f"<small>✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b></small>", unsafe_allow_html=True)
-            return 1.0
+    # def compute_ratio(actual, min_val, max_val, adjust_val, name):
+    #     if adjust_val == 0:
+    #         return 1.0
+    #     if actual < min_val:
+    #         needed = min_val - actual
+    #         ratio = (adjust_val + needed) / adjust_val
+    #         st.markdown(f"<small>🔺 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
+    #         return ratio
+    #     elif actual > max_val:
+    #         excess = actual - max_val
+    #         ratio = (adjust_val - excess) / adjust_val
+    #         st.markdown(f"<small>🔻 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
+    #         return ratio
+    #     else:
+    #         st.markdown(f"<small>✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b></small>", unsafe_allow_html=True)
+    #         return 1.0
 
     # ratios = [
     #     compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
@@ -499,13 +499,29 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             st.markdown(f"### {sid}님의 추천 식단")
                             st.dataframe(match)
 
+                            def compute_ratio(actual, min_val, max_val, adjust_val, name):
+                                if adjust_val == 0:
+                                    return 1.0
+                                if actual < min_val:
+                                    needed = min_val - actual
+                                    ratio = (adjust_val + needed) / adjust_val
+                                    st.markdown(f"<small>🔺 <b>{name}</b>: 부족 {needed:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
+                                    return ratio
+                                elif actual > max_val:
+                                    excess = actual - max_val
+                                    ratio = (adjust_val - excess) / adjust_val
+                                    st.markdown(f"<small>🔻 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b></small>", unsafe_allow_html=True)
+                                    return ratio
+                                else:
+                                    st.markdown(f"<small>✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b></small>", unsafe_allow_html=True)
+                                    return 1.0
+                        
                             ratios = [
-                                        compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
-                                        compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_vals["탄수화물(g)"], "탄수화물"),
-                                        compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_vals["단백질(g)"], "단백질"),
-                                        compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
-                                    ]
-            
+                                compute_ratio(totals["에너지(kcal)"], kcal_min, kcal_max, current_vals["에너지(kcal)"], "에너지"),
+                                compute_ratio(totals["탄수화물(g)"], carb_min, carb_max, current_vals["탄수화물(g)"], "탄수화물"),
+                                compute_ratio(totals["단백질(g)"], protein_min, protein_max, current_vals["단백질(g)"], "단백질"),
+                                compute_ratio(totals["지방(g)"], fat_min, fat_max, current_vals["지방(g)"], "지방")
+                            ]
                             if set(nutrient_cols).issubset(match.columns):
                                 st.markdown("#### 👩🏻‍⚕️ 메뉴 영양성분 정보")
                                 total_nutrients = match[nutrient_cols].sum(numeric_only=True)

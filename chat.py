@@ -4,21 +4,14 @@ from io import BytesIO
 import re
 
 standard_df = pd.read_excel("./MFDS.xlsx", sheet_name=0, header=0)
-standard_df = standard_df.set_index("질환").T.fillna("")
+standard_df = standard_df.set_index(standard_df.columns[0]).T
+standard_df.index.name = "질환"
+standard_df = standard_df.fillna("")
 
 disease_standards = {}
 for disease, row in standard_df.iterrows():
     sorted_key = ", ".join(sorted([d.strip() for d in disease.split(",")]))  # <-- 정렬 + 공백 제거
-    disease_standards[sorted_key] = {
-        "에너지(kcal)": row["에너지(kcal)"],
-        "당류(g)": row["당류(g)"],
-        "식이섬유(g)": row["식이섬유(g)"],
-        "단백질(g)": row["단백질(g)"],
-        "지방(g)": row["지방(g)"],
-        "포화지방(g)": row["포화지방(g)"],
-        "나트륨(mg)": row["나트륨(mg)"],
-        "칼륨(mg)": row["칼륨(mg)"]
-    }
+    disease_standards[sorted_key] = row.to_dict()
 # ========== 함수 정의 ==========
 
 def assign_primary_disease(row):

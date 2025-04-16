@@ -9,11 +9,14 @@ disease_standards = {}
 for _, row in standard_df.iterrows():
     disease = row["질환"]
     disease_standards[disease] = {
-        "식이섬유(g)": row["식이섬유"],
-        "단백질(g)": row["단백질"],
-        "지방(g)": row["지방"],
-        "포화지방(g)": row["포화지방"],
-        "나트륨(mg)": row["나트륨"]
+        "에너지(kcal)": row["에너지(kcal)"],
+        "당류(g)": row["당류(g)],
+        "식이섬유(g)": row["식이섬유(g)"],
+        "단백질(g)": row["단백질(g)"],
+        "지방(g)": row["지방(g)"],
+        "포화지방(g)": row["포화지방(g)"],
+        "나트륨(mg)": row["나트륨(mg)"],
+        "칼륨(mg)":row["칼륨(mg)"]
     }
 
 # ========== 함수 정의 ==========

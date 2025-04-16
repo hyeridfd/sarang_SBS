@@ -515,7 +515,7 @@ if st.session_state.mode == "🥗 맞춤 식단 솔루션":
                             match = update_rice_nutrient(match, category_df)
                             match = adjust_rice_if_nutrient_insufficient(match, patient_df, sid)
             
-                            disease_label = patient_df[patient_df["수급자ID"] == sid]["질환"]
+                            disease_label = patient_df[patient_df["수급자ID"] == sid]["대표질환"]
                             nutrient_info = patient_df[patient_df["수급자ID"] == sid][
                                 ["개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]
                             ].iloc[0].to_dict()

@@ -257,8 +257,47 @@ def extract_float(text):
     match = re.search(r"[-+]?\d*\.?\d+", str(text))
     return float(match.group()) if match else None
     
-def evaluate_nutrient_criteria(nutrient, value, rule):
+# def evaluate_nutrient_criteria(nutrient, value, rule):
+#     rule = str(rule).strip()
+#     if rule.endswith("이하"):
+#         limit = extract_float(rule)
+#         return "충족" if value <= limit else "미달"
+#     elif rule.endswith("이상"):
+#         limit = extract_float(rule)
+#         return "충족" if value >= limit else "미달"
+#     elif rule.endswith("미만"):
+#         limit = extract_float(rule)
+#         return "충족" if value < limit else "미달"
+#     elif "~" in rule:
+#         parts = rule.split("~")
+#         low, high = extract_float(parts[0]), extract_float(parts[1])
+#         return "충족" if low <= value <= high else "미달"
+#     return "확인불가"
+def evaluate_nutrient_criteria(nutrient, value, rule, total_energy=None):
     rule = str(rule).strip()
+    
+    if "%" in rule and total_energy:  # 에너지 대비 비율 기준
+        percent_limit = extract_float(rule)
+        if nutrient == "포화지방(g)":
+            ratio = (value * 9 / total_energy) * 100
+        elif nutrient == "지방(g)":
+            ratio = (value * 9 / total_energy) * 100
+        elif nutrient == "단백질(g)":
+            ratio = (value * 4 / total_energy) * 100
+        elif nutrient == "탄수화물(g)":
+            ratio = (value * 4 / total_energy) * 100
+        else:
+            return "확인불가"
+        
+        if "이하" in rule:
+            return "충족" if ratio <= percent_limit else "미달"
+        elif "미만" in rule:
+            return "충족" if ratio < percent_limit else "미달"
+        elif "이상" in rule:
+            return "충족" if ratio >= percent_limit else "미달"
+        return "확인불가"
+
+    # 일반 수치 기준 처리
     if rule.endswith("이하"):
         limit = extract_float(rule)
         return "충족" if value <= limit else "미달"
@@ -272,7 +311,9 @@ def evaluate_nutrient_criteria(nutrient, value, rule):
         parts = rule.split("~")
         low, high = extract_float(parts[0]), extract_float(parts[1])
         return "충족" if low <= value <= high else "미달"
+
     return "확인불가"
+
 
 # def generate_evaluation_summary(total_nutrients, disease):
 #     standard = disease_standards.get(disease, {})
@@ -289,6 +330,8 @@ def evaluate_nutrient_criteria(nutrient, value, rule):
     
 def generate_evaluation_summary(total_nutrients, diseases):
     evaluation = {}
+    total_energy = total_nutrients.get("에너지(kcal)", 0)
+    
     for nutrient in [
         "에너지(kcal)", "당류(g)", "식이섬유(g)", "단백질(g)",
         "지방(g)", "포화지방(g)", "나트륨(mg)", "칼륨(mg)"

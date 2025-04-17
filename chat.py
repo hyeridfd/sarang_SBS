@@ -58,7 +58,7 @@ def get_meal_option(rice, side):
     elif rice == "갈죽" and side == "갈찬":
         suffix = "_갈찬"
         soup_suffix = "_국물만"
-        replace_rice = {"잡곡밥": "야채죽_갈죽", "쌀밥": "야채죽_갈죽"}
+        replace_rice = {"잡곡밥": "야채죽_갈죽", "쌀밥": "야채죽_갈죽", "야채죽": "야채죽_갈죽"}
 
     return {"suffix": suffix, "soup_suffix": soup_suffix, "replace_rice": replace_rice}
 

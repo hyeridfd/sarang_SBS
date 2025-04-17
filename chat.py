@@ -306,7 +306,7 @@ def generate_evaluation_summary(total_nutrients, diseases):
 
 st.set_page_config(page_title="사랑과선행 요양원 맞춤 푸드 솔루션", layout="wide")
 
-st.image("./logo.png", width=400)
+st.image("./logo.png", width=300)
 
 st.markdown(
     '<h3 style="color:#226f54; font-size:45px; font-weight:bold;">SNU CareFit +</h3>',

@@ -309,7 +309,7 @@ st.set_page_config(page_title="사랑과선행 요양원 맞춤 푸드 솔루션
 st.image("./logo.png", width=300)
 
 st.markdown(
-    '<h3 style="color:#226f54; font-size:45px; font-weight:bold;">SNU CareFit +</h3>',
+    '<h3 style="color:#226f54; font-size:50px; font-weight:bold;">SNU CareFit +</h3>',
     unsafe_allow_html=True
 )
 st.sidebar.markdown("""

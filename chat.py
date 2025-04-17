@@ -564,8 +564,8 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
                             st.markdown(
                                 f"""
                                 <div style='font-size:16px; line-height:1.6'>
-                                🧓 <b>{sid}님의 메뉴:</b>
-                                <b>{disease_label}</b> /
+                                🥗 <b>{sid}님의 추천 메뉴:</b>
+                                <b>{disease_label}</b>
                                 """,
                                 unsafe_allow_html=True
                             )

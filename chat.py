@@ -544,22 +544,22 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
 
                             info_row = patient_df[patient_df["수급자ID"] == sid].iloc[0]
                             # 기본 정보 + 개인 영양 기준
-                            st.markdown(
-                                f"""
-                                <div style='font-size:16px; line-height:1.6'>
-                                🧓 <b>{sid}님의 정보</b>:
-                                <b>성별:{info_row['성별']}</b> /
-                                <b>나이:{info_row['나이']}세</b> /
-                                <b>키:{info_row['신장']}cm</b> /
-                                <b>체중:{info_row['체중']}kg</b> /
-                                <b>활동수준:{info_row['활동정도']}</b> /
-                                <b>요양등급:{info_row['요양등급']}</b> /
-                                <b>밥 종류:{info_row['밥']}</b> /
-                                <b>반찬 종류:{info_row['반찬']}</b>
-                                </div>
-                                """,
-                                unsafe_allow_html=True
-                            )
+                            # st.markdown(
+                            #     f"""
+                            #     <div style='font-size:16px; line-height:1.6'>
+                            #     🧓 <b>{sid}님의 정보</b>:
+                            #     <b>성별:{info_row['성별']}</b> /
+                            #     <b>나이:{info_row['나이']}세</b> /
+                            #     <b>키:{info_row['신장']}cm</b> /
+                            #     <b>체중:{info_row['체중']}kg</b> /
+                            #     <b>활동수준:{info_row['활동정도']}</b> /
+                            #     <b>요양등급:{info_row['요양등급']}</b> /
+                            #     <b>밥 종류:{info_row['밥']}</b> /
+                            #     <b>반찬 종류:{info_row['반찬']}</b>
+                            #     </div>
+                            #     """,
+                            #     unsafe_allow_html=True
+                            # )
                             
                             individual_info = patient_df[patient_df["수급자ID"] == sid][[
                                 "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"

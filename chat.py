@@ -360,7 +360,7 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown(
-    '<h3 style="color:#6c757d; font-size:16px; font-weight:bold;">서울대와 사랑과선행이 어르신들의 건강 상태를 고려한 푸드 솔루션을 제공합니다.</h3>',
+    '<h3 style="color:#6c757d; font-size:14px; font-weight:semibold;">건강한 한 끼로 어르신의 일상을 더 따뜻하게, 서울대와 사랑과선행이 함께합니다.</h3>',
     unsafe_allow_html=True
 )
 #st.caption("서울대와 사랑과선행이 어르신들의 건강 상태를 고려한 푸드 솔루션을 제공합니다.")

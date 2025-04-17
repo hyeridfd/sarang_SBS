@@ -565,7 +565,7 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
                                 f"""
                                 <div style='font-size:18px; line-height:1.6'>
                                 🥗 <b>{sid}님의 추천 메뉴:</b>
-                                <b>{disease_label}</b>
+                                <b>{disease_label}식</b>
                                 """,
                                 unsafe_allow_html=True
                             )

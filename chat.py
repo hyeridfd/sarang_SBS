@@ -377,7 +377,7 @@ st.sidebar.markdown(
 st.sidebar.markdown("무엇을 도와드릴까요?")
 
 if st.sidebar.button("🥗 맞춤 식단 솔루션", use_container_width=True):
-    st.session_state.mode = "🥗 맞춤 식단 솔루션"
+    st.session_state.mode = "맞춤 식단 솔루션"
     st.rerun()
 
 # if st.sidebar.button("💬 라이프스타일 코칭", use_container_width=True):

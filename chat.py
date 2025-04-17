@@ -166,7 +166,7 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     match = match.copy()  # SettingWithCopyWarning 방지
     totals = match[nutrient_cols].sum(numeric_only=True)
 
-    adjust_targets = match[match["Category"].isin(["밥", "주찬"])]
+    adjust_targets = match[match["Category"].isin(["밥", "주찬", "부찬1"])]
     if adjust_targets.empty:
         return match
 

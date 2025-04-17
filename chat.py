@@ -367,7 +367,7 @@ if 'message_list' not in st.session_state:
 
 # 세션 초기화
 if 'mode' not in st.session_state:
-    st.session_state.mode = "🥗 맞춤 푸드 솔루션"
+    st.session_state.mode = "맞춤 푸드 솔루션"
 
 st.sidebar.markdown(
     '<h3 style="color:#226f54; font-size:28px; font-weight:bold; margin-bottom:10px;">모드 선택</h3>',
@@ -377,7 +377,7 @@ st.sidebar.markdown(
 st.sidebar.markdown("무엇을 도와드릴까요?")
 
 if st.sidebar.button("🥗 맞춤 푸드 솔루션", use_container_width=True):
-    st.session_state.mode = "🥗 맞춤 푸드 솔루션"
+    st.session_state.mode = "맞춤 푸드 솔루션"
     st.rerun()
 
 # if st.sidebar.button("💬 라이프스타일 코칭", use_container_width=True):

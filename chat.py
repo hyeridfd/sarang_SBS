@@ -132,7 +132,7 @@ def update_rice_nutrient(match, category_df):
 
 
 def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
-       def parse_range(value):
+    def parse_range(value):
         try:
             if isinstance(value, str) and "~" in value:
                 parts = value.split("~")
@@ -142,7 +142,11 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
         except Exception as e:
             st.warning(f"⚠️ parse_range 오류: {value}, 에러: {e}")
         return [0.0, 0.0]
-           
+            
+    
+    def round_to_nearest_ratio(value, allowed_ratios=[0.25, 0.5, 1.0, 1.25, 2.0]):
+        return min(allowed_ratios, key=lambda x: abs(x - value))
+
 
     # 수급자 기준 정보 가져오기
     row = patient_df[patient_df["수급자ID"] == selected_id]
@@ -186,11 +190,7 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
             return ratio, f"🔺 <b>{name}</b>: 초과 {excess:.2f} → 비율 <b>{ratio:.2f}</b>"
     
         return 1.0, f"✅ <b>{name}</b>: 기준 충족 → 비율 <b>1.00</b>"
-
-def round_to_nearest_ratio(value, allowed_ratios=[0.25, 0.5, 1.0, 1.25, 2.0]):
-    return min(allowed_ratios, key=lambda x: abs(x - value))
-
-            
+    
     ratio_msgs = []
     ratios = []
     for nutrient, min_val, max_val in zip(
@@ -216,10 +216,10 @@ def round_to_nearest_ratio(value, allowed_ratios=[0.25, 0.5, 1.0, 1.25, 2.0]):
     # 가장 조정이 필요한 비율 (1에서 가장 멀리 떨어진 값)
     most_significant_ratio = max(ratios, key=lambda r: abs(r - 1.0))
     
-    # 0.2 ~ 1.5로 클립
-    ratio = min(max(most_significant_ratio, 0.2), 1.5)
+    # # 0.2 ~ 1.5로 클립
+    # ratio = min(max(most_significant_ratio, 0.2), 1.5)
 
-    rounded_ratio = round_to_nearest_ratio(ratio)
+    rounded_ratio = round_to_nearest_ratio(most_significant_ratio)
 
     # if ratio != 1.0:
     #     st.write(f"🍚 {selected_id} 밥+주찬 조절 비율: {ratio:.2f}")
@@ -227,9 +227,9 @@ def round_to_nearest_ratio(value, allowed_ratios=[0.25, 0.5, 1.0, 1.25, 2.0]):
     #         match.loc[idxs, col] = match.loc[idxs, col] * ratio
 
     if rounded_ratio != 1.0:
-    st.write(f"🍽️ {selected_id} 전체 식단 조절 비율: {rounded_ratio:.2f}")
-    match[nutrient_cols] = match[nutrient_cols].apply(lambda col: col * rounded_ratio)
-
+        st.write(f"🍽️ {selected_id} 밥+주찬 조절 비율: {rounded_ratio:.2f}")
+        for col in nutrient_cols:
+            match.loc[idxs, col] = match.loc[idxs, col] * rounded_ratio
 
     return match
 
@@ -667,4 +667,3 @@ if st.session_state.mode == "맞춤 식단 솔루션":
     # st.write("patient_df['대표질환'] 값:", patient_df["대표질환"].unique())
     # st.write("patient_df['대표질환'] 유형:", patient_df["대표질환"].dtype)
     # st.write("patient_df['질환'] 값:", patient_df["질환"].unique())
-

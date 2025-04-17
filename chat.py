@@ -564,12 +564,14 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
                             #     """,
                             #     unsafe_allow_html=True
                             # )
+
+                            label_display = "일반" if disease_label == "질환없음" else disease_label
                             
                             st.markdown(
                                 f"""
                                 <div style='font-size:18px; line-height:1.6'>
                                 🥗 <b>{sid}님의 추천 메뉴:</b>
-                                <b>{disease_label}식</b>
+                                <b>{label_display}식</b>
                                 """,
                                 unsafe_allow_html=True
                             )

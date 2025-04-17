@@ -634,27 +634,27 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
                     on="수급자ID", how="left"
                 )
                 merged.to_excel(writer, sheet_name=disease, index=False)
-            eval_df.to_excel(writer, sheet_name="영양기준_충족여부", index=False)
-            workbook  = writer.book
-            worksheet = writer.sheets["영양기준_충족여부"]
+            # eval_df.to_excel(writer, sheet_name="영양기준_충족여부", index=False)
+            # workbook  = writer.book
+            # worksheet = writer.sheets["영양기준_충족여부"]
         
-            # '미달' 텍스트가 있는 셀에 빨간 글씨 적용
-            red_format = workbook.add_format({
-                'font_color': 'red',
-                'bold': True
-            })
+            # # '미달' 텍스트가 있는 셀에 빨간 글씨 적용
+            # red_format = workbook.add_format({
+            #     'font_color': 'red',
+            #     'bold': True
+            # })
         
-            # 전체 DataFrame 크기에 맞춰 범위 계산
-            nrows, ncols = eval_df.shape
-            for col_idx in range(ncols):
-                col_letter = chr(65 + col_idx) if col_idx < 26 else f"{chr(64 + col_idx // 26)}{chr(65 + col_idx % 26)}"
-                cell_range = f"{col_letter}2:{col_letter}{nrows+1}"
-                worksheet.conditional_format(cell_range, {
-                    'type': 'text',
-                    'criteria': 'containing',
-                    'value': '미달',
-                    'format': red_format
-                })
+            # # 전체 DataFrame 크기에 맞춰 범위 계산
+            # nrows, ncols = eval_df.shape
+            # for col_idx in range(ncols):
+            #     col_letter = chr(65 + col_idx) if col_idx < 26 else f"{chr(64 + col_idx // 26)}{chr(65 + col_idx % 26)}"
+            #     cell_range = f"{col_letter}2:{col_letter}{nrows+1}"
+            #     worksheet.conditional_format(cell_range, {
+            #         'type': 'text',
+            #         'criteria': 'containing',
+            #         'value': '미달',
+            #         'format': red_format
+            #     })
         output.seek(0)
         st.download_button(
             "⬇️ 맞춤 식단 데이터 다운로드", 

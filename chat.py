@@ -564,7 +564,7 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
                             st.markdown(
                                 f"""
                                 <div style='font-size:16px; line-height:1.6'>
-                                🧓 <b>{sid}님의 메뉴:</b>:
+                                🧓 <b>{sid}님의 메뉴:</b>
                                 <b>{disease_label}</b> /
                                 """,
                                 unsafe_allow_html=True
@@ -579,9 +579,9 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
                                 f"""
                                 <div style='font-size:16px;'>
                                 💡 <b>{sid}님의 한 끼 영양 기준:</b>
-                                <b>에너지:{individual_info['개인_에너지(kcal)']} kcal</b> /
-                                <b>탄수화물:{individual_info['개인_탄수화물(g)']} g</b> /
-                                <b>단백질:{individual_info['개인_단백질(g)']} g</b> /
+                                <b>에너지:{individual_info['개인_에너지(kcal)']} kcal</b> |
+                                <b>탄수화물:{individual_info['개인_탄수화물(g)']} g</b> |
+                                <b>단백질:{individual_info['개인_단백질(g)']} g</b> |
                                 <b>지방:{individual_info['개인_지방(g)']} g</b>
                                 </div>
                                 """,

@@ -550,7 +550,7 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
                                 🧓 <b>{sid}님의 정보</b>:
                                 <b>성별:{info_row['성별']}</b> /
                                 <b>나이:{info_row['나이']}세</b> /
-                                <b>키:{info_row['키']}cm</b> /
+                                <b>키:{info_row['신장']}cm</b> /
                                 <b>체중:{info_row['체중']}kg</b> /
                                 <b>활동수준:{info_row['활동정도']}</b> /
                                 <b>요양등급:{info_row['요양등급']}</b> /

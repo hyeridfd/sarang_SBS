@@ -367,7 +367,7 @@ if 'message_list' not in st.session_state:
 
 # 세션 초기화
 if 'mode' not in st.session_state:
-    st.session_state.mode = "🥗 맞춤 식단 솔루션"
+    st.session_state.mode = "🥗 맞춤 푸드 솔루션"
 
 st.sidebar.markdown(
     '<h3 style="color:#226f54; font-size:28px; font-weight:bold; margin-bottom:10px;">모드 선택</h3>',
@@ -376,8 +376,8 @@ st.sidebar.markdown(
 
 st.sidebar.markdown("무엇을 도와드릴까요?")
 
-if st.sidebar.button("🥗 맞춤 식단 솔루션", use_container_width=True):
-    st.session_state.mode = "맞춤 식단 솔루션"
+if st.sidebar.button("🥗 맞춤 푸드 솔루션", use_container_width=True):
+    st.session_state.mode = "🥗 맞춤 푸드 솔루션"
     st.rerun()
 
 # if st.sidebar.button("💬 라이프스타일 코칭", use_container_width=True):
@@ -389,7 +389,7 @@ if st.sidebar.button("🥗 맞춤 식단 솔루션", use_container_width=True):
 # ================================
 
 # 🥗 맞춤 식단 솔루션 모드
-if st.session_state.mode == "맞춤 식단 솔루션":
+if st.session_state.mode == "맞춤 푸드 솔루션":
     st.markdown("### 🏥 요양원 선택")
     selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
     st.markdown("### 🗂️ 요양원 메뉴와 어르신 정보를 업로드하세요")

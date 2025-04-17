@@ -359,7 +359,11 @@ st.sidebar.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.caption("서울대와 사랑과선행이 어르신들의 건강 상태를 고려한 푸드 솔루션을 제공합니다.")
+st.markdown(
+    '<h3 style="color:#6c757d; font-size:16px; font-weight:bold;">서울대와 사랑과선행이 어르신들의 건강 상태를 고려한 푸드 솔루션을 제공합니다.</h3>',
+    unsafe_allow_html=True
+)
+#st.caption("서울대와 사랑과선행이 어르신들의 건강 상태를 고려한 푸드 솔루션을 제공합니다.")
 
 # 세션 상태 초기화
 if 'message_list' not in st.session_state:

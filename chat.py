@@ -312,7 +312,46 @@ def generate_evaluation_summary(total_nutrients, diseases):
 
 st.set_page_config(page_title="SNU CareFit +", layout="wide")
 
-st.image("./logo.png", width=300)
+#st.image("./logo.png", width=300)
+
+# 상단 네비게이션 바 (흰 배경, 고정 영역)
+st.markdown("""
+    <style>
+    .topbar {
+        background-color: rgba(255,255,255,0.95);
+        padding: 16px 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 999;
+    }
+    .topbar div {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 20px;
+        color: #333;
+    }
+    .logo {
+        height: 40px;
+    }
+    .nav-left, .nav-right {
+        display: flex;
+        gap: 30px;
+    }
+    </style>
+    <div class="topbar">
+        <div class="nav-left">
+            <div>시니어푸드</div>
+            <div>시니어헬스케어</div>
+        </div>
+        <img class="logo" src="https://github.com/hyeridfd/sarang_SBS/blob/main/logo.png">
+        <div class="nav-right">
+            <div>요양원플랫폼</div>
+            <div>커뮤니티</div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
 # --- 배너 삽입 ---
 def get_image_base64(path):

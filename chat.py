@@ -491,10 +491,10 @@ def main_page():
     
     col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
     with col2:
-        if st.button("🏥 SNU CareFit\n(요양원)", use_container_width=True):
+        if st.button("🏥 SNU CareFit<br>(요양원 맞춤 식단)", use_container_width=True):
             switch_page("nursing_home")
     with col3:
-        if st.button("🍱 SNU CareFit-Home", use_container_width=True):
+        if st.button("🍱 SNU CareFit-Home<br>(가정용 맞춤 식단)", use_container_width=True):
             switch_page("hyodocook")
             
 def nursing_home_page():

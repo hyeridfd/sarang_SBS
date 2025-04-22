@@ -323,35 +323,35 @@ logo_base64 = get_base64("./logo.png")  # 최신 로고
 # 상단 네비게이션 바 (흰 배경, 고정 영역)
 st.markdown(f"""
     <style>
-    .topbar {
+    .topbar {{
         background-color: white;
         padding: 12px 40px;
         display: flex;
         justify-content: center;      /* 가운데 정렬 */
         align-items: center;
         gap: 80px;                    /* 각 그룹 사이 간격 */
-    }
+    }}
     
-    .nav-left, .nav-right {
+    .nav-left, .nav-right {{
         display: flex;
         gap: 30px;
         flex: 1;                      /* 좌우 그룹이 일정 공간 차지하게 */
         justify-content: flex-start; /* 좌측 정렬 */
-    }
+    }}
     
-    .nav-right {
+    .nav-right {{
         justify-content: flex-end;    /* 우측 정렬 */
-    }
+    }}
     
-    .topbar div {
+    .topbar div {{
         font-size: 18px;
         font-weight: 600;
         color: #333;
-    }
+    }}
     
-    .logo {
+    .logo {{
         height: 60px;
-    }
+    }}
     </style>
     
     <div class="topbar">

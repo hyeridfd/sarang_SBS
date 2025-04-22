@@ -483,49 +483,17 @@ if 'mode' not in st.session_state:
 def go_to(page_name):
     st.session_state.page = page_name
 
-# 메인 페이지 UI
+# 💡 메인 페이지 UI
 if st.session_state.page == "main":
     st.markdown("<h2 style='text-align:center; margin-top:40px;'>💡 원하는 솔루션을 선택해주세요</h2>", unsafe_allow_html=True)
 
-    st.markdown("""
-    <style>
-    .button-container {
-        display: flex;
-        justify-content: center;
-        gap: 60px;
-        margin-top: 30px;
-    }
-
-    .custom-button {
-        background-color: #f1f3b0;
-        border: none;
-        padding: 20px 40px;
-        border-radius: 16px;
-        font-size: 20px;
-        font-weight: bold;
-        box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-        width: 280px;
-        text-align: center;
-    }
-
-    .custom-button:hover {
-        background-color: #e7ed79;
-        transform: translateY(-3px);
-        box-shadow: 3px 6px 10px rgba(0,0,0,0.15);
-    }
-    </style>
-
-    <div class="button-container">
-        <form action="" method="post">
-            <button class="custom-button" name="page" value="nursing_home">🏥 요양원 솔루션</button>
-        </form>
-        <form action="" method="post">
-            <button class="custom-button" name="page" value="hyodocook">🍱 효도쿡 솔루션</button>
-        </form>
-    </div>
-    """, unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🏥 요양원 솔루션", use_container_width=True):
+            go_to("nursing_home")
+    with col2:
+        if st.button("🍱 효도쿡 솔루션", use_container_width=True):
+            go_to("hyodocook")
 
 # 요양원 솔루션 페이지
 elif st.session_state.page == "nursing_home":

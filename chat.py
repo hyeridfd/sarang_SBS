@@ -329,7 +329,7 @@ st.markdown(f"""
         display: flex;
         justify-content: center;      /* 가운데 정렬 */
         align-items: center;
-        gap: 350px;                    /* 각 그룹 사이 간격 */
+        gap: 100px;                    /* 각 그룹 사이 간격 */
     }}
     
     .nav-left, .nav-right {{
@@ -344,7 +344,7 @@ st.markdown(f"""
     }}
     
     .topbar div {{
-        font-size: 20px;
+        font-size: 26px;
         font-weight: 600;
         color: #333;
     }}

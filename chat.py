@@ -529,7 +529,7 @@ if st.session_state.page == "main":
 
 # 요양원 솔루션 페이지
 elif st.session_state.page == "nursing_home":
-    st.markdown("<h2>🏥 요양원 솔루션</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>요양원 솔루션</h2>", unsafe_allow_html=True)
     # 👉 여기에 기존 요양원 기능 코드 삽입
     # st.markdown("### 🏥 요양원 선택")
     # selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])

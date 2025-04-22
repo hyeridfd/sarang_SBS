@@ -475,8 +475,19 @@ if 'message_list' not in st.session_state:
 if 'mode' not in st.session_state:
     st.session_state.mode = "맞춤 푸드 솔루션"
 
+# st.sidebar.markdown(
+#     '<h3 style="color:#226f54; font-size:28px; font-weight:bold; margin-bottom:10px;">시니어푸드</h3>',
+#     unsafe_allow_html=True
+# )
+
 st.sidebar.markdown(
-    '<h3 style="color:#226f54; font-size:28px; font-weight:bold; margin-bottom:10px;">시니어푸드</h3>',
+    """
+    <div style="text-align:center;">
+        <h3 style="color:#226f54; font-size:28px; font-weight:bold; margin-bottom:10px;">
+            시니어푸드
+        </h3>
+    </div>
+    """,
     unsafe_allow_html=True
 )
 

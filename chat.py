@@ -321,7 +321,7 @@ def get_base64(path):
 logo_base64 = get_base64("./logo.png")  # 최신 로고
 
 # 상단 네비게이션 바 (흰 배경, 고정 영역)
-st.markdown("""
+st.markdown(f"""
     <style>
     .topbar {
         background-color: white;

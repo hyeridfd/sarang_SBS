@@ -490,10 +490,10 @@ if st.session_state.page == "main":
     col1, col2 = st.columns(2)
     with col1:
         if st.button("🏥 요양원 솔루션", use_container_width=True):
-            go_to("nursing_home")
+            st.session_state.page = "nursing_home"
     with col2:
         if st.button("🍱 효도쿡 솔루션", use_container_width=True):
-            go_to("hyodocook")
+            st.session_state.page = "hyodocook"
 
 # 요양원 솔루션 페이지
 elif st.session_state.page == "nursing_home":

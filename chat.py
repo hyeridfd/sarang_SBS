@@ -372,7 +372,7 @@ def get_image_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-img_base64 = get_image_base64("./sarang.png")
+img_base64 = get_image_base64("./sarang_1.png")
 
 st.markdown(
     f"""

@@ -312,27 +312,9 @@ st.set_page_config(page_title="SNU CareFit +", layout="wide")
 
 st.image("./logo.png", width=300)
 
-# 이미지 배너 스타일 설정
-st.markdown(
-    """
-    <style>
-    .banner-container {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-    .banner-container img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-    </style>
-    <div class="banner-container">
-        <img src="https://github.com/hyeridfd/sarang_SBS/blob/main/sarang.png" alt="시니어 배너">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# 배너 이미지 삽입 (최상단)
+st.image("./sarang.png", use_column_width=True)
+
 
 st.markdown(
     '<h3 style="color:#226f54; font-size:50px; font-weight:bold;">SNU CareFit +</h3>',

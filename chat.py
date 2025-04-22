@@ -491,17 +491,17 @@ def main_page():
     
     col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
     with col2:
-        if st.button("🏥 SNU CareFit  \n(요양원 맞춤 식단)", use_container_width=True):
+        if st.button("🏥 SNU CareFit  \n(요양원 맞춤 푸드 솔루션)", use_container_width=True):
             switch_page("nursing_home")
     with col3:
-        if st.button("🍱 SNU CareFit-Home  \n(가정용 맞춤 식단)", use_container_width=True):
+        if st.button("🍱 SNU CareFit-Home  \n(가정용 맞춤 푸드 솔루션)", use_container_width=True):
             switch_page("hyodocook")
             
 def nursing_home_page():
     st.markdown("<h1 style='color:#226f54;'>SNU CareFit</h1>", unsafe_allow_html=True)
     st.markdown("<p class='description'>건강한 한 끼로 어르신의 일상을 더 따뜻하게, 서울대와 사랑과선행이 함께합니다.</p>", unsafe_allow_html=True)
     # 요양원 솔루션 페이지
-    st.markdown("<h2>💡요양원 솔루션</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>💡요양원 맞춤 푸드 솔루션</h2>", unsafe_allow_html=True)
     
     # --- 요양원 선택 영역 ---
     #st.markdown("<div class='section'>", unsafe_allow_html=True)

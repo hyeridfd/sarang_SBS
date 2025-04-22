@@ -477,7 +477,7 @@ def main_page():
     st.markdown("""
         <style>
         button[kind="primary"] {
-            font-size: 30px !important;
+            font-size: 40px !important;
             font-weight: 700 !important;
             padding: 1em 1.5em !important;
         }

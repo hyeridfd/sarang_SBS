@@ -476,10 +476,11 @@ def switch_page(page_name):
 def main_page():
     st.markdown("""
         <style>
-        button[kind="primary"] {
-            font-size: 40px !important;
+        div.stButton > button {
+            font-size: 36px !important;
             font-weight: 700 !important;
-            padding: 1em 1.5em !important;
+            padding: 1em 2em !important;
+            height: auto;
         }
         </style>
     """, unsafe_allow_html=True)

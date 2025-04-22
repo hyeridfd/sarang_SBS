@@ -334,7 +334,7 @@ st.markdown(f"""
     
     .nav-left, .nav-right {{
         display: flex;
-        gap: 70px;
+        gap: 100px;
         flex: 1;                      /* 좌우 그룹이 일정 공간 차지하게 */
         justify-content: flex-start; /* 좌측 정렬 */
     }}
@@ -344,13 +344,13 @@ st.markdown(f"""
     }}
     
     .topbar div {{
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 600;
         color: #333;
     }}
     
     .logo {{
-        height: 100px;
+        height: 200px;
     }}
     </style>
     

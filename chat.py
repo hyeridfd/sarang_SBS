@@ -313,26 +313,13 @@ st.set_page_config(page_title="SNU CareFit +", layout="wide")
 st.image("./logo.png", width=300)
 
 # 배너 스타일링 + 이미지 삽입
-st.markdown(
-    """
-    <style>
-    .banner-container {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-    .banner-container img {
-        height: 250px;
-        width: auto;
-        object-fit: cover;
-    }
-    </style>
-    <div class="banner-container">
-        <img src="./sarang.png" alt="시니어 배너">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+from PIL import Image
+
+# 이미지 열기
+image = Image.open("./sarang.png")
+
+# 이미지 출력 (높이 제한)
+st.image(image, use_column_width=True, output_format="PNG", caption=None)
 
 
 st.markdown(

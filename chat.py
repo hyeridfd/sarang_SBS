@@ -314,6 +314,12 @@ st.set_page_config(page_title="SNU CareFit +", layout="wide")
 
 #st.image("./logo.png", width=300)
 
+def get_base64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+logo_base64 = get_base64("./logo.png")  # 최신 로고
+
 # 상단 네비게이션 바 (흰 배경, 고정 영역)
 st.markdown("""
     <style>

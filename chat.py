@@ -312,25 +312,10 @@ st.set_page_config(page_title="SNU CareFit +", layout="wide")
 
 st.image("./logo.png", width=300)
 
-import base64
+from PIL import Image
 
-def get_image_base64(path):
-    with open(path, "rb") as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
-img_base64 = get_image_base64("./sarang.png")
-
-# HTML 삽입 (비율 유지 + 꽉 찬 너비)
-st.markdown(
-    f"""
-    <div style="width: 100%; overflow: hidden; margin-bottom: 30px;">
-        <img src="data:image/png;base64,{img_base64}"
-             style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+image = Image.open("./sarang.png")
+st.image(image, use_column_width=True)
 
 st.markdown(
     '<h3 style="color:#226f54; font-size:50px; font-weight:bold;">SNU CareFit +</h3>',

@@ -329,7 +329,7 @@ st.markdown(f"""
         display: flex;
         justify-content: center;      /* 가운데 정렬 */
         align-items: center;
-        gap: 80px;                    /* 각 그룹 사이 간격 */
+        gap: 150px;                    /* 각 그룹 사이 간격 */
     }}
     
     .nav-left, .nav-right {{
@@ -350,7 +350,7 @@ st.markdown(f"""
     }}
     
     .logo {{
-        height: 60px;
+        height: 100px;
     }}
     </style>
     

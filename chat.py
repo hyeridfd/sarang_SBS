@@ -334,7 +334,7 @@ st.markdown(f"""
     
     .nav-left, .nav-right {{
         display: flex;
-        gap: 100px;
+        gap: 200px;
         flex: 1;                      /* 좌우 그룹이 일정 공간 차지하게 */
         justify-content: flex-start; /* 좌측 정렬 */
     }}
@@ -350,7 +350,7 @@ st.markdown(f"""
     }}
     
     .logo {{
-        height: 200px;
+        height: 150px;
     }}
     </style>
     

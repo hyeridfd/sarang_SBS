@@ -324,7 +324,7 @@ img_base64 = get_image_base64("./sarang.png")
 st.markdown(
     f"""
     <div style="text-align: center; margin-bottom: 30px;">
-        <img src="data:image/png;base64,{img_base64}" style="height:220px;">
+        <img src="data:image/png;base64,{img_base64}" style="width:100%;height:220px;">
     </div>
     """,
     unsafe_allow_html=True

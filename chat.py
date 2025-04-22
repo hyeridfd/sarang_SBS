@@ -477,43 +477,12 @@ def switch_page(page_name):
 # 각 페이지 함수 분리
 def main_page():
     st.markdown("<h2 style='text-align:center;'>💡 원하는 솔루션을 선택해주세요</h2>", unsafe_allow_html=True)
-    st.markdown("""
-    <style>
-    .centered-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 60px;
-        margin-top: 40px;
-    }
-
-    .centered-buttons button {
-        background-color: #f1f3b0;
-        border: 1px solid #d0d26f;
-        padding: 14px 28px;
-        font-size: 16px;
-        font-weight: 600;
-        color: #333;
-        border-radius: 10px;
-        cursor: pointer;
-        min-width: 180px;
-        max-width: 200px;
-        box-shadow: 2px 3px 5px rgba(0,0,0,0.1);
-        transition: all 0.2s ease-in-out;
-    }
-
-    .centered-buttons button:hover {
-        background-color: #e7ed79;
-        transform: translateY(-2px);
-    }
-    </style>
-    """, unsafe_allow_html=True)
-    
     col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
     with col2:
-        if st.button("🏥 요양원 솔루션"):
+        if st.button("🏥 요양원 솔루션", use_container_width=True):
             switch_page("nursing_home")
     with col3:
-        if st.button("🍱 효도쿡 솔루션"):
+        if st.button("🍱 효도쿡 솔루션", use_container_width=True):
             switch_page("hyodocook")
             
 def nursing_home_page():

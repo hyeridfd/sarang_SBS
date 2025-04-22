@@ -344,13 +344,13 @@ st.markdown(f"""
     }}
     
     .topbar div {{
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 600;
         color: #333;
     }}
     
     .logo {{
-        height: 150px;
+        height: 100px;
     }}
     </style>
     

@@ -304,7 +304,7 @@ def generate_evaluation_summary(total_nutrients, diseases):
 
 # ========== Streamlit 앱 시작 ==========
 
-st.set_page_config(page_title="사랑과선행 요양원 맞춤 푸드 솔루션", layout="wide")
+st.set_page_config(page_title="SNU CareFit +", layout="wide")
 
 st.image("./logo.png", width=300)
 
@@ -414,7 +414,7 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
         
         final_results = generate_final_results(patient_df, category_df)
 
-        # 🥗 점심 영양소 계산을 위한 함수 정의
+        # 점심 영양소 계산을 위한 함수 정의
         def convert_height_pa(row):
             height_m = row["신장"] / 100  # cm → m
             pa_map = {1: 1.0, 2: 1.1, 3: 1.2}
@@ -450,7 +450,7 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
             min_intake, max_intake = daily_intake_range
             return (min_intake * 0.3, max_intake * 0.3)  # 점심 기준 30%
         
-        # ✨ 점심 기준 영양소 계산 및 컬럼 추가
+        #점심 기준 영양소 계산 및 컬럼 추가
         energy_list, carbs_list, protein_list, fat_list = [], [], [], []
         
         for _, row in patient_df.iterrows():

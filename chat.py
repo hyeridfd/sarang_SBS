@@ -226,10 +226,14 @@ def adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id):
     #     for col in nutrient_cols:
     #         match.loc[idxs, col] = match.loc[idxs, col] * ratio
 
-    if rounded_ratio != 1.0:
-        st.write(f"🍽️ {selected_id} 밥+주찬 조절 비율: {rounded_ratio:.2f}")
-        for col in nutrient_cols:
-            match.loc[idxs, col] = match.loc[idxs, col] * rounded_ratio
+    # if rounded_ratio != 1.0:
+    #     st.write(f"🍽️ {selected_id} 밥+주찬 조절 비율: {rounded_ratio:.2f}")
+    #     for col in nutrient_cols:
+    #         match.loc[idxs, col] = match.loc[idxs, col] * rounded_ratio
+
+    st.write(f"🍽️ {selected_id} 밥+주찬 조절 비율: {rounded_ratio:.2f}")
+    for col in nutrient_cols:
+        match.loc[idxs, col] = match.loc[idxs, col] * rounded_ratio
 
     return match
 

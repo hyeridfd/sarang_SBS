@@ -325,11 +325,11 @@ st.markdown(f"""
     <style>
     .topbar {{
         background-color: white;
-        padding: 12px 100px;
+        padding: 12px 200px;
         display: flex;
         justify-content: center;      /* 가운데 정렬 */
         align-items: center;
-        gap: 150px;                    /* 각 그룹 사이 간격 */
+        gap: 200px;                    /* 각 그룹 사이 간격 */
     }}
     
     .nav-left, .nav-right {{

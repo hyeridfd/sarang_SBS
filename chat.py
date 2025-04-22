@@ -509,7 +509,7 @@ def main_page():
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([2, 1, 2])
-    with col2:
+    with col1:
         if st.button("🏥 요양원 솔루션"):
             switch_page("nursing_home")
     with col3:

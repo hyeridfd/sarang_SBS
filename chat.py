@@ -334,7 +334,7 @@ st.markdown(f"""
     
     .nav-left, .nav-right {{
         display: flex;
-        gap: 30px;
+        gap: 70px;
         flex: 1;                      /* 좌우 그룹이 일정 공간 차지하게 */
         justify-content: flex-start; /* 좌측 정렬 */
     }}

@@ -474,8 +474,20 @@ def switch_page(page_name):
 
 # 각 페이지 함수 분리
 def main_page():
+    # 버튼 스타일 먼저 정의
+    st.markdown("""
+        <style>
+        div.stButton > button {
+            font-size: 20px !important;
+            font-weight: 600;
+            padding: 0.8em 1.2em;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
     st.markdown("<h2 style='text-align:center;'>💡 원하는 솔루션을 선택해주세요</h2>", unsafe_allow_html=True)
-    st.markdown("<hr style='margin: 30px 0;'>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
+    # st.markdown("<hr style='margin: 30px 0;'>", unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
     with col2:
         if st.button("🏥 SNU CareFit", use_container_width=True):

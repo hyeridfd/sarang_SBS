@@ -496,7 +496,7 @@ if st.session_state.page == "main":
             st.session_state.page = "hyodocook"
 
 # 요양원 솔루션 페이지
-elif st.session_state.page == "nursing_home":
+if st.session_state.page == "nursing_home":
     st.markdown("<h2>요양원 솔루션</h2>", unsafe_allow_html=True)
     # 👉 여기에 기존 요양원 기능 코드 삽입
     # st.markdown("### 🏥 요양원 선택")

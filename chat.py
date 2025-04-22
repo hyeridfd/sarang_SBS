@@ -345,7 +345,7 @@ st.markdown("""
             <div>시니어푸드</div>
             <div>시니어헬스케어</div>
         </div>
-        <img class="logo" src="https://github.com/hyeridfd/sarang_SBS/blob/main/logo.png">
+        <img class="logo" src="https://raw.githubusercontent.com/hyeridfd/sarang_SBS/main/logo.png">
         <div class="nav-right">
             <div>요양원플랫폼</div>
             <div>커뮤니티</div>

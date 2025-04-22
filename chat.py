@@ -469,355 +469,357 @@ if "page" not in st.session_state:
 if 'mode' not in st.session_state:
     st.session_state.mode = "맞춤 푸드 솔루션"
 
-# # 페이지 이동 함수
-# def go_to(page_name):
-#     st.session_state.page = page_name
+# 페이지 이동 함수
+def switch_page(page_name):
+    st.session_state.page = page_name
+    st.experimental_rerun()
 
-# 💡 메인 페이지 UI
-if st.session_state.page == "main":
-    st.markdown("<h2 style='text-align:center; margin-top:40px;'>💡 원하는 솔루션을 선택해주세요</h2>", unsafe_allow_html=True)
-
+# 각 페이지 함수 분리
+def main_page():
+    st.markdown("<h2 style='text-align:center;'>💡 원하는 솔루션을 선택해주세요</h2>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
         if st.button("🏥 요양원 솔루션", use_container_width=True):
-            st.session_state.page = "nursing_home"
+            switch_page("nursing_home")
     with col2:
         if st.button("🍱 효도쿡 솔루션", use_container_width=True):
-            st.session_state.page = "hyodocook"
-
+            switch_page("hyodocook")
+            
+def nursing_home_page():
     # 요양원 솔루션 페이지
-    if st.session_state.page == "nursing_home":
-        st.markdown("<h2>요양원 솔루션</h2>", unsafe_allow_html=True)
-        # 👉 여기에 기존 요양원 기능 코드 삽입
-        # st.markdown("### 🏥 요양원 선택")
-        # selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
-        # st.markdown("### 🗂️ 요양원 메뉴와 어르신 정보를 업로드하세요")
+    st.markdown("<h2>요양원 솔루션</h2>", unsafe_allow_html=True)
+    # 👉 여기에 기존 요양원 기능 코드 삽입
+    # st.markdown("### 🏥 요양원 선택")
+    # selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
+    # st.markdown("### 🗂️ 요양원 메뉴와 어르신 정보를 업로드하세요")
+    
+    # --- 요양원 선택 영역 ---
+    #st.markdown("<div class='section'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>🏥 요양원 선택</div>", unsafe_allow_html=True)
+    selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
+    #st.markdown("</div>", unsafe_allow_html=True)
+
+    # 구분선 추가
+    st.markdown("<hr style='margin: 30px 0;'>", unsafe_allow_html=True)
         
-        # --- 요양원 선택 영역 ---
-        #st.markdown("<div class='section'>", unsafe_allow_html=True)
-        st.markdown("<div class='section-title'>🏥 요양원 선택</div>", unsafe_allow_html=True)
-        selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
-        #st.markdown("</div>", unsafe_allow_html=True)
+    # --- 파일 업로드 영역 ---
+    # menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
+    # patient_file = st.file_uploader("📂 어르신 정보 파일 업로드", type="xlsx")
+
+    #st.markdown("<div class='section'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>📂 요양원 메뉴와 어르신 정보를 업로드하세요</div>", unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**🍽️ 메뉴 파일 (.xlsx)**")
+        menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
+
+    with col2:
+        st.markdown("**🧓 어르신 정보 파일 (.xlsx)**")
+        patient_file = st.file_uploader("📂 어르신 정보 파일 업로드", type="xlsx")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+        # st.markdown("##### 📋 메뉴 파일 업로드")
+        # menu_file = st.file_uploader("Drag and drop or browse 메뉴 파일 (.xlsx)", type=["xlsx"])
+        # st.markdown("##### 🧓 어르신 정보 파일 업로드")
+        # patient_file = st.file_uploader("Drag and drop or browse 어르신 파일 (.xlsx)", type=["xlsx"])
+        # st.markdown("</div>", unsafe_allow_html=True)
     
-        # 구분선 추가
-        st.markdown("<hr style='margin: 30px 0;'>", unsafe_allow_html=True)
-            
-        # --- 파일 업로드 영역 ---
-        # menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
-        # patient_file = st.file_uploader("📂 어르신 정보 파일 업로드", type="xlsx")
-    
-        #st.markdown("<div class='section'>", unsafe_allow_html=True)
-        st.markdown("<div class='section-title'>📂 요양원 메뉴와 어르신 정보를 업로드하세요</div>", unsafe_allow_html=True)
-    
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown("**🍽️ 메뉴 파일 (.xlsx)**")
-            menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
-    
-        with col2:
-            st.markdown("**🧓 어르신 정보 파일 (.xlsx)**")
-            patient_file = st.file_uploader("📂 어르신 정보 파일 업로드", type="xlsx")
-    
-        st.markdown("</div>", unsafe_allow_html=True)
-            # st.markdown("##### 📋 메뉴 파일 업로드")
-            # menu_file = st.file_uploader("Drag and drop or browse 메뉴 파일 (.xlsx)", type=["xlsx"])
-            # st.markdown("##### 🧓 어르신 정보 파일 업로드")
-            # patient_file = st.file_uploader("Drag and drop or browse 어르신 파일 (.xlsx)", type=["xlsx"])
-            # st.markdown("</div>", unsafe_allow_html=True)
+    if menu_file and patient_file:
+        category_df = pd.read_excel(menu_file, sheet_name="category")
+        category_df = category_df[category_df["Category"].isin(["밥", "국", "주찬", "부찬1", "부찬2", "김치"])]  #간식 메뉴 제외하고 한 끼 식사 구성 요소만 남김
+        category_df = category_df[category_df["Disease"] != "저작곤란"]
         
-        if menu_file and patient_file:
-            category_df = pd.read_excel(menu_file, sheet_name="category")
-            category_df = category_df[category_df["Category"].isin(["밥", "국", "주찬", "부찬1", "부찬2", "김치"])]  #간식 메뉴 제외하고 한 끼 식사 구성 요소만 남김
-            category_df = category_df[category_df["Disease"] != "저작곤란"]
-            
-            patient_df = pd.read_excel(patient_file, sheet_name=0)
+        patient_df = pd.read_excel(patient_file, sheet_name=0)
+    
+        patient_df["대표질환"] = patient_df.apply(assign_primary_disease, axis=1)
+        patient_df["질환"] = patient_df.apply(assign_all_diseases, axis=1)
+        patient_df["식단옵션"] = patient_df.apply(lambda row: get_meal_option(row["밥"], row["반찬"]), axis=1)
         
-            patient_df["대표질환"] = patient_df.apply(assign_primary_disease, axis=1)
-            patient_df["질환"] = patient_df.apply(assign_all_diseases, axis=1)
-            patient_df["식단옵션"] = patient_df.apply(lambda row: get_meal_option(row["밥"], row["반찬"]), axis=1)
-            
-            final_results = generate_final_results(patient_df, category_df)
-    
-            # 점심 영양소 계산을 위한 함수 정의
-            def convert_height_pa(row):
-                height_m = row["신장"] / 100  # cm → m
-                pa_map = {1: 1.0, 2: 1.1, 3: 1.2}
-                pa = pa_map.get(row["활동정도"], 1.0)
-                return height_m, pa
-            
-            def calculate_eer(sex, age, weight, height, pa):
-                if sex in ['남성', 'male', '남']:
-                    return 662 - (9.53 * age) + pa * (15.91 * weight + 539.6 * height)
-                elif sex in ['여성', 'female', '여']:
-                    return 354 - (6.91 * age) + pa * (9.36 * weight + 726 * height)
-                else:
-                    raise ValueError("Invalid sex")
-    
-            #체질량지수(BMI)에 따른 하루 권장 섭취 칼로리 도출
-            def calculate_daily_intake(sex, age, weight, height, pa):
-                bmi = weight / (height ** 2)
-                eer = calculate_eer(sex, age, weight, height, pa)
-                #비만 -> 500~700kcal 줄임
-                if bmi >= 25:
-                    return (eer - 700, eer - 500)
-                #비만전단계 -> 300~700kcal 줄임
-                elif 23 <= bmi < 25:
-                    return (eer - 500, eer - 300)
-                #정상 -> 범위를 위해 +-10%
-                elif 18.5 <= bmi < 23:
-                    return (eer * 0.9, eer * 1.1)
-                #저체중 -> 300~500kcal 보충
-                else:
-                    return (eer + 300, eer + 500)
-            
-            def calculate_meal_distribution(daily_intake_range):
-                min_intake, max_intake = daily_intake_range
-                return (min_intake * 0.3, max_intake * 0.3)  # 점심 기준 30%
-            
-            #점심 기준 영양소 계산 및 컬럼 추가
-            energy_list, carbs_list, protein_list, fat_list = [], [], [], []
-            
-            for _, row in patient_df.iterrows():
-                sex = row["성별"]
-                age = row["나이"]
-                weight = row["체중"]
-                height_m, pa = convert_height_pa(row)
-                
-                try:
-                    daily_range = calculate_daily_intake(sex, age, weight, height_m, pa)
-                    lunch_kcal = calculate_meal_distribution(daily_range)
-                    
-                    carbs_min = daily_range[0] * 0.55 / 4
-                    carbs_max = daily_range[1] * 0.65 / 4
-                    protein_min = max(50, daily_range[0] * 0.07 / 4) if sex in ['남성', 'male', '남'] else max(40, daily_range[0] * 0.07 / 4)
-                    protein_max = daily_range[1] * 0.20 / 4
-                    fat_min = daily_range[0] * 0.15 / 9
-                    fat_max = daily_range[1] * 0.30 / 9
-            
-                    lunch_carbs = calculate_meal_distribution((carbs_min, carbs_max))
-                    lunch_protein = calculate_meal_distribution((protein_min, protein_max))
-                    lunch_fat = calculate_meal_distribution((fat_min, fat_max))
-            
-                    energy_list.append(f"{lunch_kcal[0]:.0f} ~ {lunch_kcal[1]:.0f}")
-                    carbs_list.append(f"{lunch_carbs[0]:.0f} ~ {lunch_carbs[1]:.0f}")
-                    protein_list.append(f"{lunch_protein[0]:.0f} ~ {lunch_protein[1]:.0f}")
-                    fat_list.append(f"{lunch_fat[0]:.0f} ~ {lunch_fat[1]:.0f}")
-            
-                except:
-                    energy_list.append("에러")
-                    carbs_list.append("에러")
-                    protein_list.append("에러")
-                    fat_list.append("에러")
-            
-            patient_df["개인_에너지(kcal)"] = energy_list
-            patient_df["개인_탄수화물(g)"] = carbs_list
-            patient_df["개인_단백질(g)"] = protein_list
-            patient_df["개인_지방(g)"] = fat_list
-    
-            # 여러 명의 수급자ID 입력 가능하도록 수정
-            selected_ids_input = st.text_area("🔍 수급자ID를 입력하세요 (여러 명은 쉼표 또는 줄바꿈으로 구분)")
-            selected_ids = [s.strip() for s in selected_ids_input.replace("\n", ",").split(",") if s.strip()]
-            
-            adjusted_results = {}
-            if selected_ids:
-                for selected_id in selected_ids:
-                    found = False
-                    for disease, df in final_results.items():
-                        results = []
-                        for sid in df["수급자ID"].unique():  # ✅ 여기 변수명 sid 등으로 변경
-                            if sid != selected_id:
-                                continue
-                            match = df[df["수급자ID"] == sid]
-                            if not match.empty:
-                                match = update_rice_nutrient(match, category_df)
-                                match = adjust_rice_if_nutrient_insufficient(match, patient_df, sid)
-                
-                                disease_label = patient_df[patient_df["수급자ID"] == sid]["대표질환"].values[0]
-                                nutrient_info = patient_df[patient_df["수급자ID"] == sid][
-                                    ["개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]
-                                ].iloc[0].to_dict()
-                                for key, val in nutrient_info.items():
-                                    match.loc[:, key] = val
-    
-                                nutrient_cols = [
-                                                    "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
-                                                    "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
-                                                ]
-    
-                                st.markdown(f"### 👩🏻‍⚕️ {sid}님의 추천 식단")
-                                table_with_total = match.copy()
-                                nutrient_cols = [
-                                    "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
-                                    "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
-                                ]
-                                totals = table_with_total[nutrient_cols].sum(numeric_only=True)
-                                
-                                # 마지막 줄에 총합 row 추가
-                                total_row = {col: totals[col] for col in nutrient_cols}
-                                total_row.update({
-                                    "Category": "총 합계"  # 메뉴/카테고리엔 빈칸 or 총합계
-                                })
-                                table_with_total = pd.concat([table_with_total, pd.DataFrame([total_row])], ignore_index=True)
-                                
-                                # 표 출력
-                                st.dataframe(table_with_total)
-    
-                                # if set(nutrient_cols).issubset(match.columns):
-                                #     st.markdown("#### 👩🏻‍⚕️ 메뉴 영양성분 정보")
-                                #     total_nutrients = match[nutrient_cols].sum(numeric_only=True)
-                                #     for col in nutrient_cols:
-                                #         st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")
-                
-                                results.append(match)
-    
-                                info_row = patient_df[patient_df["수급자ID"] == sid].iloc[0]
-                                # 기본 정보 + 개인 영양 기준
-                                # st.markdown(
-                                #     f"""
-                                #     <div style='font-size:16px; line-height:1.6'>
-                                #     🧓 <b>{sid}님의 정보</b>:
-                                #     <b>성별:{info_row['성별']}</b> /
-                                #     <b>나이:{info_row['나이']}세</b> /
-                                #     <b>키:{info_row['신장']}cm</b> /
-                                #     <b>체중:{info_row['체중']}kg</b> /
-                                #     <b>활동수준:{info_row['활동정도']}</b> /
-                                #     <b>요양등급:{info_row['요양등급']}</b> /
-                                #     <b>밥 종류:{info_row['밥']}</b> /
-                                #     <b>반찬 종류:{info_row['반찬']}</b>
-                                #     </div>
-                                #     """,
-                                #     unsafe_allow_html=True
-                                # )
-    
-                                label_display = "일반" if disease_label == "질환없음" else disease_label
-                                
-                                st.markdown(
-                                    f"""
-                                    <div style='font-size:18px; line-height:1.6'>
-                                    🥗 <b>{sid}님의 추천 메뉴:</b>
-                                    <b>{label_display}식</b>
-                                    """,
-                                    unsafe_allow_html=True
-                                )
-    
-                                
-                                individual_info = patient_df[patient_df["수급자ID"] == sid][[
-                                    "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"
-                                ]].iloc[0]
-    
-                                st.markdown(
-                                    f"""
-                                    <div style='font-size:18px;'>
-                                    💡 <b>{sid}님의 한 끼 영양 기준:</b>
-                                    <b>에너지:{individual_info['개인_에너지(kcal)']} kcal</b> |
-                                    <b>탄수화물:{individual_info['개인_탄수화물(g)']} g</b> |
-                                    <b>단백질:{individual_info['개인_단백질(g)']} g</b> |
-                                    <b>지방:{individual_info['개인_지방(g)']} g</b>
-                                    </div>
-                                    """,
-                                    unsafe_allow_html=True
-                                )
-                                st.markdown("---")
-                                found = True
-                                break
-                                
-                        if results:
-                            if disease not in adjusted_results:
-                                adjusted_results[disease] = pd.concat(results, ignore_index=True)
-                            else:
-                                adjusted_results[disease] = pd.concat(
-                                    [adjusted_results[disease], pd.concat(results, ignore_index=True)],
-                                    ignore_index=True
-                            )
-    
-                    if not found:
-                        st.warning(f"❌ {selected_id} 수급자ID에 대한 식단을 찾을 수 없습니다.")
-    
+        final_results = generate_final_results(patient_df, category_df)
+
+        # 점심 영양소 계산을 위한 함수 정의
+        def convert_height_pa(row):
+            height_m = row["신장"] / 100  # cm → m
+            pa_map = {1: 1.0, 2: 1.1, 3: 1.2}
+            pa = pa_map.get(row["활동정도"], 1.0)
+            return height_m, pa
         
-                        #results = []
-                        #match = df[df["수급자ID"] == selected_id]
-                        #for selected_id in df["수급자ID"].unique():
-                            #match = df[df["수급자ID"] == selected_id]
-                        
-                        # if not match.empty:
-                        #     match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
-                        #     disease_label = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
-            
-            evaluation_results = []
-            for disease, df in adjusted_results.items():
-                for sid in df["수급자ID"].unique():
-                    target = df[df["수급자ID"] == sid]
-                    total_nutrients = target[[
-                        "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
-                    ]].sum(numeric_only=True)
-                    disease_value = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
-                    diseases = [d.strip() for d in disease_value.split(",")] if disease_value else ["질환없음"]
-                    evaluation = generate_evaluation_summary(total_nutrients, diseases)
-                    row = {"수급자ID": sid, "질환": disease_value}
-                    row.update(evaluation)
-                    evaluation_results.append(row)
-    
-    
-            if not adjusted_results:
-                st.warning("⚠️ 사용자 정보가 비어 있습니다. 사용자 정보를 입력해주세요.")
+        def calculate_eer(sex, age, weight, height, pa):
+            if sex in ['남성', 'male', '남']:
+                return 662 - (9.53 * age) + pa * (15.91 * weight + 539.6 * height)
+            elif sex in ['여성', 'female', '여']:
+                return 354 - (6.91 * age) + pa * (9.36 * weight + 726 * height)
             else:
-                st.success("✅ 맞춤 식단 데이터가 도출되었습니다.")
-    
-            # 엑셀 다운로드
-            output = BytesIO()
-            eval_df = pd.DataFrame(evaluation_results)
-            with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-                for disease, df in adjusted_results.items():
-                    # 💡 수급자별 영양소 정보 병합
-                    merged = df.merge(
-                        patient_df[["수급자ID", "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]],
-                        on="수급자ID", how="left"
-                    )
-                    merged.to_excel(writer, sheet_name=disease, index=False)
-                # eval_df.to_excel(writer, sheet_name="영양기준_충족여부", index=False)
-                # workbook  = writer.book
-                # worksheet = writer.sheets["영양기준_충족여부"]
+                raise ValueError("Invalid sex")
+
+        #체질량지수(BMI)에 따른 하루 권장 섭취 칼로리 도출
+        def calculate_daily_intake(sex, age, weight, height, pa):
+            bmi = weight / (height ** 2)
+            eer = calculate_eer(sex, age, weight, height, pa)
+            #비만 -> 500~700kcal 줄임
+            if bmi >= 25:
+                return (eer - 700, eer - 500)
+            #비만전단계 -> 300~700kcal 줄임
+            elif 23 <= bmi < 25:
+                return (eer - 500, eer - 300)
+            #정상 -> 범위를 위해 +-10%
+            elif 18.5 <= bmi < 23:
+                return (eer * 0.9, eer * 1.1)
+            #저체중 -> 300~500kcal 보충
+            else:
+                return (eer + 300, eer + 500)
+        
+        def calculate_meal_distribution(daily_intake_range):
+            min_intake, max_intake = daily_intake_range
+            return (min_intake * 0.3, max_intake * 0.3)  # 점심 기준 30%
+        
+        #점심 기준 영양소 계산 및 컬럼 추가
+        energy_list, carbs_list, protein_list, fat_list = [], [], [], []
+        
+        for _, row in patient_df.iterrows():
+            sex = row["성별"]
+            age = row["나이"]
+            weight = row["체중"]
+            height_m, pa = convert_height_pa(row)
             
-                # # '미달' 텍스트가 있는 셀에 빨간 글씨 적용
-                # red_format = workbook.add_format({
-                #     'font_color': 'red',
-                #     'bold': True
-                # })
+            try:
+                daily_range = calculate_daily_intake(sex, age, weight, height_m, pa)
+                lunch_kcal = calculate_meal_distribution(daily_range)
+                
+                carbs_min = daily_range[0] * 0.55 / 4
+                carbs_max = daily_range[1] * 0.65 / 4
+                protein_min = max(50, daily_range[0] * 0.07 / 4) if sex in ['남성', 'male', '남'] else max(40, daily_range[0] * 0.07 / 4)
+                protein_max = daily_range[1] * 0.20 / 4
+                fat_min = daily_range[0] * 0.15 / 9
+                fat_max = daily_range[1] * 0.30 / 9
+        
+                lunch_carbs = calculate_meal_distribution((carbs_min, carbs_max))
+                lunch_protein = calculate_meal_distribution((protein_min, protein_max))
+                lunch_fat = calculate_meal_distribution((fat_min, fat_max))
+        
+                energy_list.append(f"{lunch_kcal[0]:.0f} ~ {lunch_kcal[1]:.0f}")
+                carbs_list.append(f"{lunch_carbs[0]:.0f} ~ {lunch_carbs[1]:.0f}")
+                protein_list.append(f"{lunch_protein[0]:.0f} ~ {lunch_protein[1]:.0f}")
+                fat_list.append(f"{lunch_fat[0]:.0f} ~ {lunch_fat[1]:.0f}")
+        
+            except:
+                energy_list.append("에러")
+                carbs_list.append("에러")
+                protein_list.append("에러")
+                fat_list.append("에러")
+        
+        patient_df["개인_에너지(kcal)"] = energy_list
+        patient_df["개인_탄수화물(g)"] = carbs_list
+        patient_df["개인_단백질(g)"] = protein_list
+        patient_df["개인_지방(g)"] = fat_list
+
+        # 여러 명의 수급자ID 입력 가능하도록 수정
+        selected_ids_input = st.text_area("🔍 수급자ID를 입력하세요 (여러 명은 쉼표 또는 줄바꿈으로 구분)")
+        selected_ids = [s.strip() for s in selected_ids_input.replace("\n", ",").split(",") if s.strip()]
+        
+        adjusted_results = {}
+        if selected_ids:
+            for selected_id in selected_ids:
+                found = False
+                for disease, df in final_results.items():
+                    results = []
+                    for sid in df["수급자ID"].unique():  # ✅ 여기 변수명 sid 등으로 변경
+                        if sid != selected_id:
+                            continue
+                        match = df[df["수급자ID"] == sid]
+                        if not match.empty:
+                            match = update_rice_nutrient(match, category_df)
+                            match = adjust_rice_if_nutrient_insufficient(match, patient_df, sid)
             
-                # # 전체 DataFrame 크기에 맞춰 범위 계산
-                # nrows, ncols = eval_df.shape
-                # for col_idx in range(ncols):
-                #     col_letter = chr(65 + col_idx) if col_idx < 26 else f"{chr(64 + col_idx // 26)}{chr(65 + col_idx % 26)}"
-                #     cell_range = f"{col_letter}2:{col_letter}{nrows+1}"
-                #     worksheet.conditional_format(cell_range, {
-                #         'type': 'text',
-                #         'criteria': 'containing',
-                #         'value': '미달',
-                #         'format': red_format
-                #     })
-            output.seek(0)
-            st.download_button(
-                "⬇️ 맞춤 식단 데이터 다운로드", 
-                data=output, 
-                file_name=f"{selected_center}_맞춤식단.xlsx", 
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                key=f"download_button_{selected_center}"
-            )
-        # st.write("category_df['Disease']에 존재하는 질환들:", category_df["Disease"].unique())
-        # st.write("patient_df['대표질환'] 값:", patient_df["대표질환"].unique())
-        # st.write("patient_df['대표질환'] 유형:", patient_df["대표질환"].dtype)
-        # st.write("patient_df['질환'] 값:", patient_df["질환"].unique())
+                            disease_label = patient_df[patient_df["수급자ID"] == sid]["대표질환"].values[0]
+                            nutrient_info = patient_df[patient_df["수급자ID"] == sid][
+                                ["개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]
+                            ].iloc[0].to_dict()
+                            for key, val in nutrient_info.items():
+                                match.loc[:, key] = val
+
+                            nutrient_cols = [
+                                                "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
+                                                "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
+                                            ]
+
+                            st.markdown(f"### 👩🏻‍⚕️ {sid}님의 추천 식단")
+                            table_with_total = match.copy()
+                            nutrient_cols = [
+                                "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)",
+                                "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
+                            ]
+                            totals = table_with_total[nutrient_cols].sum(numeric_only=True)
+                            
+                            # 마지막 줄에 총합 row 추가
+                            total_row = {col: totals[col] for col in nutrient_cols}
+                            total_row.update({
+                                "Category": "총 합계"  # 메뉴/카테고리엔 빈칸 or 총합계
+                            })
+                            table_with_total = pd.concat([table_with_total, pd.DataFrame([total_row])], ignore_index=True)
+                            
+                            # 표 출력
+                            st.dataframe(table_with_total)
+
+                            # if set(nutrient_cols).issubset(match.columns):
+                            #     st.markdown("#### 👩🏻‍⚕️ 메뉴 영양성분 정보")
+                            #     total_nutrients = match[nutrient_cols].sum(numeric_only=True)
+                            #     for col in nutrient_cols:
+                            #         st.write(f"- 총 {col}: **{total_nutrients[col]:.1f}**")
+            
+                            results.append(match)
+
+                            info_row = patient_df[patient_df["수급자ID"] == sid].iloc[0]
+                            # 기본 정보 + 개인 영양 기준
+                            # st.markdown(
+                            #     f"""
+                            #     <div style='font-size:16px; line-height:1.6'>
+                            #     🧓 <b>{sid}님의 정보</b>:
+                            #     <b>성별:{info_row['성별']}</b> /
+                            #     <b>나이:{info_row['나이']}세</b> /
+                            #     <b>키:{info_row['신장']}cm</b> /
+                            #     <b>체중:{info_row['체중']}kg</b> /
+                            #     <b>활동수준:{info_row['활동정도']}</b> /
+                            #     <b>요양등급:{info_row['요양등급']}</b> /
+                            #     <b>밥 종류:{info_row['밥']}</b> /
+                            #     <b>반찬 종류:{info_row['반찬']}</b>
+                            #     </div>
+                            #     """,
+                            #     unsafe_allow_html=True
+                            # )
+
+                            label_display = "일반" if disease_label == "질환없음" else disease_label
+                            
+                            st.markdown(
+                                f"""
+                                <div style='font-size:18px; line-height:1.6'>
+                                🥗 <b>{sid}님의 추천 메뉴:</b>
+                                <b>{label_display}식</b>
+                                """,
+                                unsafe_allow_html=True
+                            )
+
+                            
+                            individual_info = patient_df[patient_df["수급자ID"] == sid][[
+                                "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"
+                            ]].iloc[0]
+
+                            st.markdown(
+                                f"""
+                                <div style='font-size:18px;'>
+                                💡 <b>{sid}님의 한 끼 영양 기준:</b>
+                                <b>에너지:{individual_info['개인_에너지(kcal)']} kcal</b> |
+                                <b>탄수화물:{individual_info['개인_탄수화물(g)']} g</b> |
+                                <b>단백질:{individual_info['개인_단백질(g)']} g</b> |
+                                <b>지방:{individual_info['개인_지방(g)']} g</b>
+                                </div>
+                                """,
+                                unsafe_allow_html=True
+                            )
+                            st.markdown("---")
+                            found = True
+                            break
+                            
+                    if results:
+                        if disease not in adjusted_results:
+                            adjusted_results[disease] = pd.concat(results, ignore_index=True)
+                        else:
+                            adjusted_results[disease] = pd.concat(
+                                [adjusted_results[disease], pd.concat(results, ignore_index=True)],
+                                ignore_index=True
+                        )
+
+                if not found:
+                    st.warning(f"❌ {selected_id} 수급자ID에 대한 식단을 찾을 수 없습니다.")
+
     
-    # 효도쿡 솔루션 페이지
-    elif st.session_state.page == "hyodocook":
-        st.markdown("<h2>🍱 효도쿡 솔루션</h2>", unsafe_allow_html=True)
-        # 👉 여기에 효도쿡용 기능 삽입
+                    #results = []
+                    #match = df[df["수급자ID"] == selected_id]
+                    #for selected_id in df["수급자ID"].unique():
+                        #match = df[df["수급자ID"] == selected_id]
+                    
+                    # if not match.empty:
+                    #     match = adjust_rice_if_nutrient_insufficient(match, patient_df, selected_id)
+                    #     disease_label = patient_df[patient_df["수급자ID"] == selected_id]["표시질환"].values[0]
+        
+        evaluation_results = []
+        for disease, df in adjusted_results.items():
+            for sid in df["수급자ID"].unique():
+                target = df[df["수급자ID"] == sid]
+                total_nutrients = target[[
+                    "에너지(kcal)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "단백질(g)", "지방(g)", "포화지방(g)", "나트륨(mg)", "칼슘(mg)", "콜레스테롤", "칼륨(mg)"
+                ]].sum(numeric_only=True)
+                disease_value = patient_df[patient_df["수급자ID"] == sid]["질환"].values[0]
+                diseases = [d.strip() for d in disease_value.split(",")] if disease_value else ["질환없음"]
+                evaluation = generate_evaluation_summary(total_nutrients, diseases)
+                row = {"수급자ID": sid, "질환": disease_value}
+                row.update(evaluation)
+                evaluation_results.append(row)
 
 
-# st.sidebar.markdown(
-#     '<h3 style="color:#226f54; font-size:28px; font-weight:bold; margin-bottom:10px;">시니어푸드</h3>',
-#     unsafe_allow_html=True
-# )
+        if not adjusted_results:
+            st.warning("⚠️ 사용자 정보가 비어 있습니다. 사용자 정보를 입력해주세요.")
+        else:
+            st.success("✅ 맞춤 식단 데이터가 도출되었습니다.")
+
+        # 엑셀 다운로드
+        output = BytesIO()
+        eval_df = pd.DataFrame(evaluation_results)
+        with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+            for disease, df in adjusted_results.items():
+                # 💡 수급자별 영양소 정보 병합
+                merged = df.merge(
+                    patient_df[["수급자ID", "개인_에너지(kcal)", "개인_탄수화물(g)", "개인_단백질(g)", "개인_지방(g)"]],
+                    on="수급자ID", how="left"
+                )
+                merged.to_excel(writer, sheet_name=disease, index=False)
+            # eval_df.to_excel(writer, sheet_name="영양기준_충족여부", index=False)
+            # workbook  = writer.book
+            # worksheet = writer.sheets["영양기준_충족여부"]
+        
+            # # '미달' 텍스트가 있는 셀에 빨간 글씨 적용
+            # red_format = workbook.add_format({
+            #     'font_color': 'red',
+            #     'bold': True
+            # })
+        
+            # # 전체 DataFrame 크기에 맞춰 범위 계산
+            # nrows, ncols = eval_df.shape
+            # for col_idx in range(ncols):
+            #     col_letter = chr(65 + col_idx) if col_idx < 26 else f"{chr(64 + col_idx // 26)}{chr(65 + col_idx % 26)}"
+            #     cell_range = f"{col_letter}2:{col_letter}{nrows+1}"
+            #     worksheet.conditional_format(cell_range, {
+            #         'type': 'text',
+            #         'criteria': 'containing',
+            #         'value': '미달',
+            #         'format': red_format
+            #     })
+        output.seek(0)
+        st.download_button(
+            "⬇️ 맞춤 식단 데이터 다운로드", 
+            data=output, 
+            file_name=f"{selected_center}_맞춤식단.xlsx", 
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            key=f"download_button_{selected_center}"
+        )
+    # st.write("category_df['Disease']에 존재하는 질환들:", category_df["Disease"].unique())
+    # st.write("patient_df['대표질환'] 값:", patient_df["대표질환"].unique())
+    # st.write("patient_df['대표질환'] 유형:", patient_df["대표질환"].dtype)
+    # st.write("patient_df['질환'] 값:", patient_df["질환"].unique())
+
+def hyodocook_page():
+    st.markdown("## 🍱 효도쿡 솔루션")
+    st.write("여기에 효도쿡 맞춤 메뉴 기능이 들어갑니다.")
+
+# 페이지 라우팅
+if st.session_state.page == "main":
+    main_page()
+elif st.session_state.page == "nursing_home":
+    nursing_home_page()
+elif st.session_state.page == "hyodocook":
+    hyodocook_page()
+
 
 st.sidebar.markdown(
     """

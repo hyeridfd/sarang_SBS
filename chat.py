@@ -512,7 +512,7 @@ def main_page():
     with col1:
         if st.button("🏥 요양원 솔루션"):
             switch_page("nursing_home")
-    with col2:
+    with col3:
         if st.button("🍱 효도쿡 솔루션"):
             switch_page("hyodocook")
             

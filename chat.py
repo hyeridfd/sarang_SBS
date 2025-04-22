@@ -476,20 +476,36 @@ if 'mode' not in st.session_state:
     st.session_state.mode = "맞춤 푸드 솔루션"
 
 st.sidebar.markdown(
-    '<h3 style="color:#226f54; font-size:28px; font-weight:bold; margin-bottom:10px;">모드 선택</h3>',
+    '<h3 style="color:#226f54; font-size:28px; font-weight:bold; margin-bottom:10px;">시니어푸드</h3>',
     unsafe_allow_html=True
 )
 
-st.sidebar.markdown("무엇을 도와드릴까요?")
+#st.sidebar.markdown("무엇을 도와드릴까요?")
 
-if st.sidebar.button("🥗 맞춤 푸드 솔루션", use_container_width=True):
+if st.sidebar.button("맞춤 푸드 솔루션", use_container_width=True):
     st.session_state.mode = "맞춤 푸드 솔루션"
     st.rerun()
 
-# if st.sidebar.button("💬 라이프스타일 코칭", use_container_width=True):
-#     st.session_state.mode = "💬 라이프스타일 코칭"
-#     st.rerun()
+if st.sidebar.button("위탁급식", use_container_width=True):
+    st.session_state.mode = "💬 라이프스타일 코칭"
+    st.rerun()
 
+if st.sidebar.button("이동급식", use_container_width=True):
+    st.session_state.mode = "💬 라이프스타일 코칭"
+    st.rerun()
+
+if st.sidebar.button("효도쿡배려식", use_container_width=True):
+    st.session_state.mode = "💬 라이프스타일 코칭"
+    st.rerun()
+    
+if st.sidebar.button("식자재유통", use_container_width=True):
+    st.session_state.mode = "💬 라이프스타일 코칭"
+    st.rerun()
+
+if st.sidebar.button("효도쿡가맹사업", use_container_width=True):
+    st.session_state.mode = "💬 라이프스타일 코칭"
+    st.rerun()
+    
 # ================================
 # 🥗 맞춤 식단 솔루션
 # ================================

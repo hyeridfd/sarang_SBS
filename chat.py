@@ -325,7 +325,7 @@ st.markdown(f"""
     <style>
     .topbar {{
         background-color: white;
-        padding: 12px 40px;
+        padding: 12px 100px;
         display: flex;
         justify-content: center;      /* 가운데 정렬 */
         align-items: center;

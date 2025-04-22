@@ -453,6 +453,9 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
         st.markdown("<div class='section-title'>🏥 요양원 선택</div>", unsafe_allow_html=True)
         selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
         st.markdown("</div>", unsafe_allow_html=True)
+
+    # 구분선 추가
+    st.markdown("<hr style='margin: 30px 0;'>", unsafe_allow_html=True)
         
     # --- 파일 업로드 영역 ---
     # menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
@@ -460,11 +463,22 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
     with st.container():
         st.markdown("<div class='section'>", unsafe_allow_html=True)
         st.markdown("<div class='section-title'>📂 요양원 메뉴와 어르신 정보를 업로드하세요</div>", unsafe_allow_html=True)
-        st.markdown("##### 📋 메뉴 파일 업로드")
-        menu_file = st.file_uploader("Drag and drop or browse 메뉴 파일 (.xlsx)", type=["xlsx"])
-        st.markdown("##### 🧓 어르신 정보 파일 업로드")
-        patient_file = st.file_uploader("Drag and drop or browse 어르신 파일 (.xlsx)", type=["xlsx"])
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**🍽️ 메뉴 파일 (.xlsx)**")
+            st.file_uploader("업로드", type=["xlsx"], key="menu_file")
+    
+        with col2:
+            st.markdown("**🧓 어르신 정보 파일 (.xlsx)**")
+            st.file_uploader("업로드", type=["xlsx"], key="patient_file")
+        
         st.markdown("</div>", unsafe_allow_html=True)
+        # st.markdown("##### 📋 메뉴 파일 업로드")
+        # menu_file = st.file_uploader("Drag and drop or browse 메뉴 파일 (.xlsx)", type=["xlsx"])
+        # st.markdown("##### 🧓 어르신 정보 파일 업로드")
+        # patient_file = st.file_uploader("Drag and drop or browse 어르신 파일 (.xlsx)", type=["xlsx"])
+        # st.markdown("</div>", unsafe_allow_html=True)
     
     if menu_file and patient_file:
         category_df = pd.read_excel(menu_file, sheet_name="category")

@@ -463,16 +463,16 @@ if st.session_state.mode == "맞춤 푸드 솔루션":
     st.markdown("<div class='section'>", unsafe_allow_html=True)
     st.markdown("<div class='section-title'>📂 요양원 메뉴와 어르신 정보를 업로드하세요</div>", unsafe_allow_html=True)
 
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown("**🍽️ 메뉴 파일 (.xlsx)**")
-            menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
-    
-        with col2:
-            st.markdown("**🧓 어르신 정보 파일 (.xlsx)**")
-            patient_file = st.file_uploader("📂 어르신 정보 파일 업로드", type="xlsx")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**🍽️ 메뉴 파일 (.xlsx)**")
+        menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
 
-        st.markdown("</div>", unsafe_allow_html=True)
+    with col2:
+        st.markdown("**🧓 어르신 정보 파일 (.xlsx)**")
+        patient_file = st.file_uploader("📂 어르신 정보 파일 업로드", type="xlsx")
+
+    st.markdown("</div>", unsafe_allow_html=True)
         # st.markdown("##### 📋 메뉴 파일 업로드")
         # menu_file = st.file_uploader("Drag and drop or browse 메뉴 파일 (.xlsx)", type=["xlsx"])
         # st.markdown("##### 🧓 어르신 정보 파일 업로드")

@@ -477,13 +477,13 @@ def main_page():
     st.markdown("""
         <style>
         div.stButton > button {
-            font-size: 100px !important;
-            font-weight: 700 !important;
-            padding: 1em 2em !important;
-            height: auto;
+            font-size: 20px !important;
+            font-weight: 600;
+            padding: 0.8em 1.2em;
         }
         </style>
     """, unsafe_allow_html=True)
+
     st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
     st.markdown("<h2 style='text-align:center;'>💡 원하는 솔루션을 선택해주세요</h2>", unsafe_allow_html=True)
     st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)

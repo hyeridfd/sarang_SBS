@@ -508,11 +508,11 @@ def main_page():
     </style>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([2, 1, 2])
-    with col1:
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+    with col2:
         if st.button("🏥 요양원 솔루션"):
             switch_page("nursing_home")
-    with col3:
+    with col4:
         if st.button("🍱 효도쿡 솔루션"):
             switch_page("hyodocook")
             

@@ -312,14 +312,23 @@ st.set_page_config(page_title="SNU CareFit +", layout="wide")
 
 st.image("./logo.png", width=300)
 
-# 배너 스타일링 + 이미지 삽입
-from PIL import Image
+import base64
 
-# 이미지 열기
-image = Image.open("./sarang.png")
+def get_image_base64(path):
+    with open(path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
 
-# 이미지 출력 (높이 제한)
-st.image(image, use_column_width=True, output_format="PNG", caption=None)
+img_base64 = get_image_base64("./sarang.png")
+
+st.markdown(
+    f"""
+    <div style="text-align: center; margin-bottom: 30px;">
+        <img src="data:image/png;base64,{img_base64}" style="height:220px;">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 
 st.markdown(

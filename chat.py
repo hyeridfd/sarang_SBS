@@ -329,7 +329,7 @@ st.markdown("""
     .topbar div {
         font-size: 22px;
         font-weight: 600;
-        margin: 0 20px;
+        margin: 0 40px;
         color: #333;
     }
     .logo {
@@ -337,7 +337,7 @@ st.markdown("""
     }
     .nav-left, .nav-right {
         display: flex;
-        gap: 30px;
+        gap: 40px;
     }
     </style>
     <div class="topbar">

@@ -474,13 +474,12 @@ def switch_page(page_name):
 
 # 각 페이지 함수 분리
 def main_page():
-    # 버튼 스타일 먼저 정의
     st.markdown("""
         <style>
-        div.stButton > button {
+        button[kind="primary"] {
             font-size: 30px !important;
-            font-weight: 600;
-            padding: 0.8em 1.2em;
+            font-weight: 700 !important;
+            padding: 1em 1.5em !important;
         }
         </style>
     """, unsafe_allow_html=True)

@@ -344,7 +344,7 @@ st.markdown(f"""
     }}
     
     .topbar div {{
-        font-size: 30px;
+        font-size: 26px;
         font-weight: 600;
         color: #333;
     }}

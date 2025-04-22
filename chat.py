@@ -477,6 +477,7 @@ def switch_page(page_name):
 # 각 페이지 함수 분리
 def main_page():
     st.markdown("<h2 style='text-align:center;'>💡 원하는 솔루션을 선택해주세요</h2>", unsafe_allow_html=True)
+    st.markdown("<hr style='margin: 30px 0;'>", unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
     with col2:
         if st.button("🏥 요양원 솔루션", use_container_width=True):

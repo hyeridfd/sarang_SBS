@@ -478,8 +478,9 @@ def main_page():
         <style>
         div.stButton > button {
             font-size: 26px !important;
-            font-weight: 600;
-            padding: 0.8em 1.2em;
+            font-weight: 700;
+            line-height: 1.2 !important;
+            padding: 0.6em 1.2em !important;
         }
         </style>
     """, unsafe_allow_html=True)

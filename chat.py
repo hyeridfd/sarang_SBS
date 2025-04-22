@@ -479,10 +479,10 @@ def main_page():
     st.markdown("<h2 style='text-align:center;'>💡 원하는 솔루션을 선택해주세요</h2>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("🏥 요양원 솔루션", use_container_width=True):
+        if st.button("🏥 요양원 솔루션", use_container_width=False):
             switch_page("nursing_home")
     with col2:
-        if st.button("🍱 효도쿡 솔루션", use_container_width=True):
+        if st.button("🍱 효도쿡 솔루션", use_container_width=False):
             switch_page("hyodocook")
             
 def nursing_home_page():

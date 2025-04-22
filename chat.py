@@ -462,11 +462,6 @@ st.sidebar.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# st.markdown(
-#     '<h3 style="color:#6c757d; font-size:16px; font-weight:normal;">건강한 한 끼로 어르신의 일상을 더 따뜻하게, 서울대와 사랑과선행이 함께합니다.</h3>',
-#     unsafe_allow_html=True
-# )
-
 # 세션 상태 초기화
 if 'message_list' not in st.session_state:
     st.session_state.message_list = []
@@ -479,9 +474,9 @@ if "page" not in st.session_state:
 if 'mode' not in st.session_state:
     st.session_state.mode = "맞춤 푸드 솔루션"
 
-# 페이지 이동 함수
-def go_to(page_name):
-    st.session_state.page = page_name
+# # 페이지 이동 함수
+# def go_to(page_name):
+#     st.session_state.page = page_name
 
 # 💡 메인 페이지 UI
 if st.session_state.page == "main":

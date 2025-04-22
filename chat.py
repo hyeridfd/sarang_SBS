@@ -327,13 +327,13 @@ st.markdown("""
         z-index: 999;
     }
     .topbar div {
-        font-size: 16px;
+        font-size: 22px;
         font-weight: 600;
         margin: 0 20px;
         color: #333;
     }
     .logo {
-        height: 40px;
+        height: 70px;
     }
     .nav-left, .nav-right {
         display: flex;

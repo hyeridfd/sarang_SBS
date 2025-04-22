@@ -318,34 +318,42 @@ st.set_page_config(page_title="SNU CareFit +", layout="wide")
 st.markdown("""
     <style>
     .topbar {
-        background-color: rgba(255,255,255,0.95);
-        padding: 16px 60px;
+        background-color: white;
+        padding: 12px 40px;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;      /* 가운데 정렬 */
         align-items: center;
-        position: relative;
-        z-index: 999;
+        gap: 80px;                    /* 각 그룹 사이 간격 */
     }
-    .topbar div {
-        font-size: 22px;
-        font-weight: 600;
-        margin: 0 40px;
-        color: #333;
-    }
-    .logo {
-        height: 70px;
-    }
+    
     .nav-left, .nav-right {
         display: flex;
-        gap: 40px;
+        gap: 30px;
+        flex: 1;                      /* 좌우 그룹이 일정 공간 차지하게 */
+        justify-content: flex-start; /* 좌측 정렬 */
+    }
+    
+    .nav-right {
+        justify-content: flex-end;    /* 우측 정렬 */
+    }
+    
+    .topbar div {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .logo {
+        height: 60px;
     }
     </style>
+    
     <div class="topbar">
         <div class="nav-left">
             <div>시니어푸드</div>
             <div>시니어헬스케어</div>
         </div>
-        <img class="logo" src="https://raw.githubusercontent.com/hyeridfd/sarang_SBS/main/logo.png">
+        <img class="logo" src="data:image/png;base64,{logo_base64}">
         <div class="nav-right">
             <div>요양원플랫폼</div>
             <div>커뮤니티</div>

@@ -321,15 +321,16 @@ def get_image_base64(path):
 
 img_base64 = get_image_base64("./sarang.png")
 
+# HTML 삽입 (비율 유지 + 꽉 찬 너비)
 st.markdown(
     f"""
-    <div style="text-align: center; margin-bottom: 30px;">
-        <img src="data:image/png;base64,{img_base64}" style="width:100%;height:300px;">
+    <div style="width: 100%; overflow: hidden; margin-bottom: 30px;">
+        <img src="data:image/png;base64,{img_base64}"
+             style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
     </div>
     """,
     unsafe_allow_html=True
 )
-
 
 st.markdown(
     '<h3 style="color:#226f54; font-size:50px; font-weight:bold;">SNU CareFit +</h3>',

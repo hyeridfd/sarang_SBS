@@ -312,7 +312,7 @@ st.set_page_config(page_title="SNU CareFit +", layout="wide")
 
 st.image("./logo.png", width=300)
 
-st.image("./sarang.png", width=300)
+st.image("./sarang.png", width=2000)
 
 st.markdown(
     '<h3 style="color:#226f54; font-size:50px; font-weight:bold;">SNU CareFit +</h3>',

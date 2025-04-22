@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-from io import BytesIO
 import re
+import base64
+from io import BytesIO
+from PIL import Image
 
 standard_df = pd.read_excel("./MFDS(1).xlsx", sheet_name=0, index_col=0)
 standard_df = standard_df.T.fillna("")
@@ -312,15 +314,54 @@ st.set_page_config(page_title="SNU CareFit +", layout="wide")
 
 st.image("./logo.png", width=300)
 
-from PIL import Image
+# --- 배너 삽입 ---
+def get_image_base64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
 
-image = Image.open("./sarang.png")
-st.image(image, use_column_width=True)
+img_base64 = get_image_base64("./sarang.png")
 
 st.markdown(
-    '<h3 style="color:#226f54; font-size:50px; font-weight:bold;">SNU CareFit +</h3>',
+    f"""
+    <style>
+    .banner {{
+        width: 100%;
+        height: auto;
+        margin-bottom: 30px;
+    }}
+    .section {{
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    }}
+    .section-title {{
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #226f54;
+    }}
+    .description {{
+        color: #444;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }}
+    </style>
+    <img src="data:image/png;base64,{img_base64}" class="banner">
+    """,
     unsafe_allow_html=True
 )
+
+# --- 소개 문구 ---
+# st.markdown(
+#     '<h3 style="color:#226f54; font-size:50px; font-weight:bold;">SNU CareFit +</h3>',
+#     unsafe_allow_html=True
+# )
+
+st.markdown("<h1 style='color:#226f54;'>SNU CareFit +</h1>", unsafe_allow_html=True)
+st.markdown("<p class='description'>건강한 한 끼로 어르신의 일상을 더 따뜻하게, 서울대와 사랑과선행이 함께합니다.</p>", unsafe_allow_html=True)
+
 st.sidebar.markdown("""
     <style>
     section[data-testid="stSidebar"] {
@@ -368,11 +409,10 @@ st.sidebar.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown(
-    '<h3 style="color:#6c757d; font-size:16px; font-weight:normal;">건강한 한 끼로 어르신의 일상을 더 따뜻하게, 서울대와 사랑과선행이 함께합니다.</h3>',
-    unsafe_allow_html=True
-)
-#st.caption("서울대와 사랑과선행이 어르신들의 건강 상태를 고려한 푸드 솔루션을 제공합니다.")
+# st.markdown(
+#     '<h3 style="color:#6c757d; font-size:16px; font-weight:normal;">건강한 한 끼로 어르신의 일상을 더 따뜻하게, 서울대와 사랑과선행이 함께합니다.</h3>',
+#     unsafe_allow_html=True
+# )
 
 # 세션 상태 초기화
 if 'message_list' not in st.session_state:
@@ -403,12 +443,28 @@ if st.sidebar.button("🥗 맞춤 푸드 솔루션", use_container_width=True):
 
 # 🥗 맞춤 식단 솔루션 모드
 if st.session_state.mode == "맞춤 푸드 솔루션":
-    st.markdown("### 🏥 요양원 선택")
-    selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
-    st.markdown("### 🗂️ 요양원 메뉴와 어르신 정보를 업로드하세요")
+    # st.markdown("### 🏥 요양원 선택")
+    # selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
+    # st.markdown("### 🗂️ 요양원 메뉴와 어르신 정보를 업로드하세요")
     
-    menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
-    patient_file = st.file_uploader("📂 어르신 정보 파일 업로드", type="xlsx")
+    # --- 요양원 선택 영역 ---
+    with st.container():
+        st.markdown("<div class='section'>", unsafe_allow_html=True)
+        st.markdown("<div class='section-title'>🏥 요양원 선택</div>", unsafe_allow_html=True)
+        selected_center = st.selectbox("요양원을 선택하세요", ["헤리티지실버케어 분당", "평택은화케어", "포천제일요양원", "엘레강스요양원", "하계실버센터", "홍천아르떼", "용인프라임실버", "굿케어힐링센터", "대교뉴이프데이케어", "상락원", "마리아의집", "서울간호전문"])
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+    # --- 파일 업로드 영역 ---
+    # menu_file = st.file_uploader("📂 메뉴 파일 업로드", type="xlsx")
+    # patient_file = st.file_uploader("📂 어르신 정보 파일 업로드", type="xlsx")
+    with st.container():
+        st.markdown("<div class='section'>", unsafe_allow_html=True)
+        st.markdown("<div class='section-title'>📂 요양원 메뉴와 어르신 정보를 업로드하세요</div>", unsafe_allow_html=True)
+        st.markdown("##### 📋 메뉴 파일 업로드")
+        menu_file = st.file_uploader("Drag and drop or browse 메뉴 파일 (.xlsx)", type=["xlsx"])
+        st.markdown("##### 🧓 어르신 정보 파일 업로드")
+        patient_file = st.file_uploader("Drag and drop or browse 어르신 파일 (.xlsx)", type=["xlsx"])
+        st.markdown("</div>", unsafe_allow_html=True)
     
     if menu_file and patient_file:
         category_df = pd.read_excel(menu_file, sheet_name="category")
